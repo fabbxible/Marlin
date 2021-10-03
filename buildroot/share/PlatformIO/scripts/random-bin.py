@@ -6,5 +6,11 @@ Import("env")
 
 from datetime import datetime
 env_name = str(env["PIOENV"])
-env['PROGNAME'] = "firmware_%s_DW7.4" % (env_name)
-#env['PROGNAME'] .= datetime.now().strftime("-%Y%m%d-%H%M%S")
+machine = {"CR10Max", "E5P", "Ender6", "CR6", "CR6MAX"}
+display = "_DW74"
+if any(x in env_name for x in machine):
+    #env['PROGNAME'] = "%s_DW7.4" % (env_name)
+    #env['PROGNAME'] = env_name + display + datetime.now().strftime("_%Y%m%d-%H%M%S")
+    env['PROGNAME'] = env_name + display + datetime.now().strftime("_%y%m%d%H%M")
+else:
+    env['PROGNAME'] = env_name + datetime.now().strftime("_%y%m%d%H%M")

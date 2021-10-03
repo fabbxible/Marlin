@@ -43,6 +43,8 @@ There is a limitation with Windows systems and path depth so the file names need
 - NF = Noise filtering for machines with cable extensions - reduces homing accuracy!
 - LR = Stock runout replaced with Lerdge
 - ZM = BLTouch connected to ZMin port instead of Probe pin 5 connector harness
+- CT = Creality Titan
+- CH = Creality High Temperature
 
 ## Support
 

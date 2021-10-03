@@ -112,7 +112,7 @@
 #define VerChar6 "N"
 #endif
 
-#define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION " TM3D " VerChar1 VerChar2 VerChar3 VerChar4 VerChar5 VerChar6
+#define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION " Fabbxible " VerChar1 VerChar2 VerChar3 VerChar4 VerChar5 VerChar6
 
 /**
  * The STRING_DISTRIBUTION_DATE represents when the binary file was built,
@@ -127,37 +127,37 @@
 #if(ENABLED(MachineMini))
   #define CUSTOM_MACHINE_NAME "Mini SuPeR"
 #elif(ENABLED(MachineEnder2))
-  #define CUSTOM_MACHINE_NAME "TM3D Ender2"
+  #define CUSTOM_MACHINE_NAME "Fabbxible Ender-2"
 #elif(ENABLED(MachineEnder3))
-  #define CUSTOM_MACHINE_NAME "TM3D Ender3"
+  #define CUSTOM_MACHINE_NAME "Fabbxible Ender-3"
 #elif(ENABLED(MachineEnder3Max))
-  #define CUSTOM_MACHINE_NAME "TM3D E3Max"
+  #define CUSTOM_MACHINE_NAME "Fabbxible Ender-3 Max"
 #elif(ENABLED(MachineEnder6))
-  #define CUSTOM_MACHINE_NAME "TM3D Ender6"
+  #define CUSTOM_MACHINE_NAME "Fabbxible Ender-6"
 #elif(ENABLED(MachineEnder3V2))
-  #define CUSTOM_MACHINE_NAME "TM3D Ender3V2"
+  #define CUSTOM_MACHINE_NAME "Fabbxible Ender-3 V2"
 #elif(ENABLED(MachineEnder4))
-  #define CUSTOM_MACHINE_NAME "TM3D Ender4"
+  #define CUSTOM_MACHINE_NAME "Fabbxible Ender-4"
 #elif(ENABLED(MachineEnder5))
-  #define CUSTOM_MACHINE_NAME "TM3D Ender5"
+  #define CUSTOM_MACHINE_NAME "Fabbxible Ender-5"
 #elif(ENABLED(MachineEnder5Plus))
-  #define CUSTOM_MACHINE_NAME "TM3D E5 Plus"
+  #define CUSTOM_MACHINE_NAME "Fabbxible Ender-5 Plus"
 #elif(ENABLED(MachineCR20))
   #define CUSTOM_MACHINE_NAME "SuPeR CR-20"
 #elif(ENABLED(MachineCR10Orig))
   #define CUSTOM_MACHINE_NAME "SuPeR CR-10"
 #elif(ENABLED(MachineCRX))
-  #define CUSTOM_MACHINE_NAME "TM3D CR-X"
+  #define CUSTOM_MACHINE_NAME "Fabbxible CR-X"
 #elif ENABLED(MachineCR10SProV2)
-  #define CUSTOM_MACHINE_NAME "TM3D 10SProV2"
+  #define CUSTOM_MACHINE_NAME "Fabbxible 10SProV2"
 #elif(ENABLED(MachineCR10SPro))
-  #define CUSTOM_MACHINE_NAME "TM3D 10S Pro"
+  #define CUSTOM_MACHINE_NAME "Fabbxible 10S Pro"
 #elif(ENABLED(MachineCR10Max))
-  #define CUSTOM_MACHINE_NAME "TM3D Max"
+  #define CUSTOM_MACHINE_NAME "Fabbxible Max"
 #elif(ENABLED(MachineCR10SV3))
-  #define CUSTOM_MACHINE_NAME "TM3D CR10V3"
+  #define CUSTOM_MACHINE_NAME "Fabbxible CR10V3"
 #elif(ENABLED(MachineCR10SV2))
-  #define CUSTOM_MACHINE_NAME "TM3D CR10V2"
+  #define CUSTOM_MACHINE_NAME "Fabbxible CR10V2"
 #elif(ENABLED(MachineCR10Std))
   #define CUSTOM_MACHINE_NAME "300 SuPeR"
 #elif(ENABLED(MachineS4))
@@ -165,7 +165,7 @@
 #elif(ENABLED(MachineS5))
   #define CUSTOM_MACHINE_NAME "500 SuPeR"
 #elif ENABLED(MachineCR2020)
-  #define CUSTOM_MACHINE_NAME "TM3D 2020"
+  #define CUSTOM_MACHINE_NAME "Fabbxible 2020"
 #endif
 
 /**
@@ -185,7 +185,7 @@
  * The WEBSITE_URL is the location where users can get more information such as
  * documentation about a specific Marlin release.
  */
-#define WEBSITE_URL "tinymachines3d.com"
+#define WEBSITE_URL "github.com/InsanityAutomation"
 
 /**
  * Set the vendor info the serial USB interface, if changable
