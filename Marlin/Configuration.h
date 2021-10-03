@@ -1164,7 +1164,7 @@
 #elif ENABLED(HotendAllMetal)
 	#define HEATER_0_MAXTEMP 315
 #else
-	#define HEATER_0_MAXTEMP 255
+	#define HEATER_0_MAXTEMP 275
 #endif
 #define HEATER_1_MAXTEMP 275
 #define HEATER_2_MAXTEMP 275
