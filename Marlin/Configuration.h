@@ -1740,41 +1740,41 @@
   #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
 #elif ANY(MachineMini, MachineCR20, MachineEnder2, MachineEnder3, MachineEnder3Max, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineEnder5Plus)
-  #define DEFAULT_MAX_FEEDRATE          { 750, 750, 10, 75 }
-  #define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 75 }
+  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 40 }
+  #define DEFAULT_MAX_ACCELERATION      { 1000, 1000, 100, 1000 }
   #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
-  #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
+  #define DEFAULT_TRAVEL_ACCELERATION   1000    // X, Y, Z acceleration for travel (non printing) moves
 #elif (ANY(MachineCR10SPro, MachineCR6, MachineCR6Max))
-  #define DEFAULT_MAX_FEEDRATE          { 500, 500, 10, 70 }
-  #define DEFAULT_MAX_ACCELERATION      { 750, 750, 100, 60 }
+  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 40 }
+  #define DEFAULT_MAX_ACCELERATION      { 1000, 750, 100, 1000 }
   #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
-  #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
+  #define DEFAULT_TRAVEL_ACCELERATION   1000    // X, Y, Z acceleration for travel (non printing) moves
 #elif (ENABLED(MachineCR10Std))
   #define DEFAULT_MAX_FEEDRATE          { 500, 500, 10, 75 }
   #define DEFAULT_MAX_ACCELERATION      { 1500, 1500, 100, 75 }
   #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
-#elif ENABLED( MachineS4)
+#elif ENABLED(MachineS4)
   #define DEFAULT_MAX_FEEDRATE          { 500, 400, 10, 75 }
   #define DEFAULT_MAX_ACCELERATION      { 1000, 750, 100, 75 }
   #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
 #elif ANY(MachineS5, MachineCR10Max)
-  #define DEFAULT_MAX_FEEDRATE          { 500, 400, 15, 75 }
-  #define DEFAULT_MAX_ACCELERATION      { 1000, 700, 100, 75 }
-  #define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves
+  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 40 }
+  #define DEFAULT_MAX_ACCELERATION      { 1000, 750, 100, 1000 }
+  #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
-  #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
+  #define DEFAULT_TRAVEL_ACCELERATION   750    // X, Y, Z acceleration for travel (non printing) moves
 #elif ANY(MachineCR2020, MachineEnder6)
-  #define DEFAULT_MAX_FEEDRATE          { 750, 750, 10, 75 }
-  #define DEFAULT_MAX_ACCELERATION      { 7000, 7000, 100, 75 }
+  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 40 }
+  #define DEFAULT_MAX_ACCELERATION      { 1500, 1500, 100, 1500 }
   #define DEFAULT_ACCELERATION          2000    // X, Y, Z and E acceleration for printing moves
-  #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
-  #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
+  #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
+  #define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves    
 #endif
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
@@ -2057,11 +2057,11 @@
       #define NOZZLE_TO_PROBE_OFFSET { -27.625, 0.0, 0 }
     #endif
   #endif
-#elif ENABLED(MachineCRXPro, HotendStock, ABL_BLTOUCH)
+#elif ALL(MachineCRXPro, HotendStock, ABL_BLTOUCH)
   #define NOZZLE_TO_PROBE_OFFSET { 48, 3, 0 }
 #elif ANY(MachineCR6, MachineCR6Max)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, 0.2 }
-#elif ENABLED(MachineCRX, HotendStock)
+#elif ALL(MachineCRX, HotendStock)
    #if ENABLED(ABL_BLTOUCH)
      #define NOZZLE_TO_PROBE_OFFSET { -22, -45, 0 }
    #elif ANY(ABL_EZABL, ABL_NCSW)
@@ -2079,7 +2079,7 @@
   #endif
 #elif ENABLED(MicroswissDirectDrive) && ENABLED(ABL_BLTOUCH)
   #define NOZZLE_TO_PROBE_OFFSET { -45, -5, 0 }
-#elif (ENABLED(ABL_BLTOUCH) && ENABLED(HotendStock))
+#elif ALL(ABL_BLTOUCH, HotendStock)
   #define NOZZLE_TO_PROBE_OFFSET { -41, -8, 0 }
 #elif ((ANY(ABL_EZABL, ABL_NCSW)) && ENABLED(HotendStock))
   #if ENABLED(CREALITY_ABL_MOUNT)
