@@ -1223,9 +1223,9 @@
         #define DEFAULT_Ki 2.17
         #define DEFAULT_Kd 73.44
       #elif ENABLED(MachineEnder5Plus)
-        #define  DEFAULT_Kp 14.72
-        #define  DEFAULT_Ki 0.89
-        #define  DEFAULT_Kd 61.22
+        #define  DEFAULT_Kp 25.84//200C  //14.72//Default
+        #define  DEFAULT_Ki  2.16//200C  //0.89//Default
+        #define  DEFAULT_Kd 77.25//200C  //61.22//Default
       #elif ENABLED(MachineCRX)
         #define DEFAULT_Kp 19.00
         #define DEFAULT_Ki 1.40
@@ -1319,6 +1319,10 @@
     #define DEFAULT_bedKp 79.49
     #define DEFAULT_bedKi 1.17
     #define DEFAULT_bedKd 1349.52
+  #elif ENABLED(MachineEnder5Plus)
+    #define  DEFAULT_bedKp 112.27//60C
+    #define  DEFAULT_bedKi   8.78//60C
+    #define  DEFAULT_bedKd 956.82//60C   
   #else
     #define  DEFAULT_bedKp 690.34
     #define  DEFAULT_bedKi 111.47
@@ -1741,7 +1745,7 @@
   #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
 #elif ANY(MachineMini, MachineCR20, MachineEnder2, MachineEnder3, MachineEnder3Max, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineEnder5Plus)
   #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 40 }
-  #define DEFAULT_MAX_ACCELERATION      { 1000, 1000, 100, 1000 }
+  #define DEFAULT_MAX_ACCELERATION      { 1500, 1500, 100, 1000 }
   #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   1000    // X, Y, Z acceleration for travel (non printing) moves
@@ -2067,6 +2071,8 @@
    #elif ANY(ABL_EZABL, ABL_NCSW)
      #define NOZZLE_TO_PROBE_OFFSET { -44, -10, 0 }
    #endif
+#elif ALL(MachineEnder5Plus, HotendStock)
+  #define NOZZLE_TO_PROBE_OFFSET { -45, -7, -2.5 }
 #elif ANY(MachineCR10SPro, MachineCR10Max) && ENABLED(HotendStock) && DISABLED(MicroswissDirectDrive)
   #define NOZZLE_TO_PROBE_OFFSET { -27, 0, 0 }
 #elif (ANY(ABL_BLTOUCH, ABL_EZABL,ABL_NCSW) && ENABLED(E3DHemera))
@@ -2805,6 +2811,8 @@
     #define GRID_MAX_POINTS_X 7
   #elif ENABLED(ABL_UBL)
     #define GRID_MAX_POINTS_X 6
+  #elif ENABLED(MachineEnder5Plus)
+    #define GRID_MAX_POINTS_X 5
   #else
     #define GRID_MAX_POINTS_X 5
   #endif
