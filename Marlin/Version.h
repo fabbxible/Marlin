@@ -131,17 +131,17 @@
 #elif(ENABLED(MachineEnder3))
   #define CUSTOM_MACHINE_NAME "Fabbxible Ender-3"
 #elif(ENABLED(MachineEnder3Max))
-  #define CUSTOM_MACHINE_NAME "Fabbxible Ender-3 Max"
+  #define CUSTOM_MACHINE_NAME "Fabbxible E3 Max"
 #elif(ENABLED(MachineEnder6))
   #define CUSTOM_MACHINE_NAME "Fabbxible Ender-6"
 #elif(ENABLED(MachineEnder3V2))
-  #define CUSTOM_MACHINE_NAME "Fabbxible Ender-3 V2"
+  #define CUSTOM_MACHINE_NAME "Fabbxible E3 V2"
 #elif(ENABLED(MachineEnder4))
   #define CUSTOM_MACHINE_NAME "Fabbxible Ender-4"
 #elif(ENABLED(MachineEnder5))
   #define CUSTOM_MACHINE_NAME "Fabbxible Ender-5"
 #elif(ENABLED(MachineEnder5Plus))
-  #define CUSTOM_MACHINE_NAME "Fabbxible Ender-5 Plus"
+  #define CUSTOM_MACHINE_NAME "Fabbxible E5 Plus"
 #elif(ENABLED(MachineCR20))
   #define CUSTOM_MACHINE_NAME "SuPeR CR-20"
 #elif(ENABLED(MachineCR10Orig))

@@ -2790,6 +2790,11 @@
 #if NONE(MachineCR10Orig, SKRMiniE3V2)
   #define G26_MESH_VALIDATION   // Enable G26 mesh validation
 #endif
+#if ANY(MachineEnder5Plus, MachineCR5Pro, MachineCR10Max) // turn off G26 as no way to stop or cancel with touch screen
+ #ifdef G26_MESH_VALIDATION
+  #undef G26_MESH_VALIDATION
+ #endif
+#endif
   #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
     #define MESH_TEST_LAYER_HEIGHT   0.2  // (mm) Default layer height for G26.
