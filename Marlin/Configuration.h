@@ -16,6 +16,7 @@
 //#define MachineCR6
 //#define MachineCR6Max
 //#define MachineEnder6
+//#define MachineCR5Pro
 
 // Touchscreens in development, not tested
 //#define MachineCR5
@@ -418,7 +419,7 @@
   #endif
 #endif
 
-#if ENABLED(MachineEnder5Plus)
+#if ANY(MachineEnder5Plus, MachineCR5Pro)
   #if NONE(ABL_NCSW, ABL_EZABL, ABL_BLTOUCH)
     #define ABL_BLTOUCH
   #endif
@@ -432,6 +433,9 @@
   #endif
   #if NONE(BedAC, BedDC)
     #define BedDC
+  #endif
+  #if ENABLED(MachineCR5Pro)
+    #define FAN_1_PIN -1
   #endif
 #endif
 
@@ -483,7 +487,7 @@
   #endif
 #endif
 
-#if ANY(MachineCRX, MachineCRXPro, MachineEnder5Plus, MachineCR10SPro, MachineCR10Max, MachineEnder6)
+#if ANY(MachineCRX, MachineCRXPro, MachineEnder5Plus, MachineCR5Pro, MachineCR10SPro, MachineCR10Max, MachineEnder6)
   #if NONE(GraphicLCD, OrigLCD, FORCE10SPRODISPLAY)
     #define FORCE10SPRODISPLAY
   #endif
@@ -634,7 +638,7 @@
   #define LCD_SERIAL_PORT 1
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL -1
-#elif ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max) && NONE(GraphicLCD, MachineEnder3V2, Creality422, Creality427, MachineEnder6)
+#elif ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR5Pro, MachineCR10Max) && NONE(GraphicLCD, MachineEnder3V2, Creality422, Creality427, MachineEnder6)
   #define LCD_SERIAL_PORT 2
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 0
@@ -1226,6 +1230,10 @@
         #define  DEFAULT_Kp 14.72
         #define  DEFAULT_Ki 0.89
         #define  DEFAULT_Kd 61.22
+      #elif ENABLED(MachineCR5Pro)
+        #define  DEFAULT_Kp 14.72
+        #define  DEFAULT_Ki 0.89
+        #define  DEFAULT_Kd 61.22
       #elif ENABLED(MachineCRX)
         #define DEFAULT_Kp 19.00
         #define DEFAULT_Ki 1.40
@@ -1661,7 +1669,7 @@
  *
  * :[2,3,4,5,6,7]
  */
-#if ANY(MachineEnder5Plus, CableExtensionNoiseFilter, MachineCR6, MachineCR6Max)
+#if ANY(MachineEnder5Plus, MachineCR5Pro, CableExtensionNoiseFilter, MachineCR6, MachineCR6Max)
   #define ENDSTOP_NOISE_THRESHOLD 2
 #endif
 
@@ -1706,7 +1714,7 @@
   #define EStepsmm 409
 #elif ANY(EZRstruder, MachineCR10SV2)
   #define EStepsmm 93
-#elif ANY(MachineCR10SPro, MachineCR10Max, MachineCRXPro, MachineEnder6)
+#elif ANY(MachineCR10SPro, MachineCR10Max, MachineCRXPro, MachineEnder6, MachineCR5Pro)
   #define EStepsmm 140 //dual drive
 #elif ENABLED(MachineCR2020)
   #define EStepsmm 113
@@ -1714,7 +1722,7 @@
   #define EStepsmm 95
 #endif
 
-#if ENABLED(MachineEnder5Plus)
+#if ANY(MachineEnder5Plus, MachineCR5Pro)
   #define ZStepsmm 800
 #else
   #define ZStepsmm 400
@@ -1739,7 +1747,7 @@
   #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
-#elif ANY(MachineMini, MachineCR20, MachineEnder2, MachineEnder3, MachineEnder3Max, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineEnder5Plus)
+#elif ANY(MachineMini, MachineCR20, MachineEnder2, MachineEnder3, MachineEnder3Max, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineEnder5Plus, MachineCR5Pro)
   #define DEFAULT_MAX_FEEDRATE          { 750, 750, 10, 75 }
   #define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 75 }
   #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
@@ -2059,6 +2067,10 @@
   #endif
 #elif ENABLED(MachineCRXPro, HotendStock, ABL_BLTOUCH)
   #define NOZZLE_TO_PROBE_OFFSET { 48, 3, 0 }
+#elif ENABLED(MachineCR5Pro)
+  #define NOZZLE_TO_PROBE_OFFSET { 50, 3, 0 }
+#elif ENABLED(MachineEnder3Max)
+  #define NOZZLE_TO_PROBE_OFFSET { 55, -8, 0 }
 #elif ANY(MachineCR6, MachineCR6Max)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, 0.2 }
 #elif ENABLED(MachineCRX, HotendStock)
@@ -2312,7 +2324,7 @@
       #define INVERT_Y_DIR false
     #endif
   #endif
-  #if ANY(MachineEnder5Plus, MachineCR2020, MachineEnder6)
+  #if ANY(MachineEnder5Plus, MachineCR5Pro, MachineCR2020, MachineEnder6)
     #define INVERT_Z_DIR false
   #else
     #define INVERT_Z_DIR true
@@ -2353,14 +2365,14 @@
 
 //#define UNKNOWN_Z_NO_RAISE // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
 #if ANY(MachineEnder5)
-  #define Z_HOMING_HEIGHT 0
+  #define Z_HOMING_HEIGHT 10
 #elif ENABLED(TOUCH_MI_PROBE)
   #define Z_HOMING_HEIGHT 10
 #else
-  #define Z_HOMING_HEIGHT 4  // (in mm) Minimal z height before homing (G28) for Z clearance above the bed, clamps, ...
+  #define Z_HOMING_HEIGHT 10  // (in mm) Minimal z height before homing (G28) for Z clearance above the bed, clamps, ...
 #endif
 
-//#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
+#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
 
 // Direction of endstops when homing; 1=MAX, -1=MIN
 // :[-1,1]
@@ -2442,6 +2454,13 @@
     #endif
     #define Y_MAX_POS 360
     #define ClipClearance 25
+  #elif ENABLED(MachineCR5Pro)
+    #define Y_BED_SIZE 225
+    #define Z_MAX_POS 380
+    #define X_BED_SIZE 300
+    #define X_MAX_POS 300
+    #define Y_MAX_POS 225
+    #define ClipClearance 10
   #elif ENABLED(MachineEnder6)
     #define X_BED_SIZE 260
     #define Y_BED_SIZE 260
@@ -2665,7 +2684,7 @@
   // a feed tube. Requires 4 bytes SRAM per sensor, plus 4 bytes overhead.
   #if ENABLED(FilamentEncoder)
     #define FILAMENT_RUNOUT_DISTANCE_MM 12
-  #elif ANY(MachineEnder5Plus, MachineCR10SPro, MachineCR10SProV2)
+  #elif ANY(MachineEnder5Plus, MachineCR5Pro MachineCR10SPro, MachineCR10SProV2)
     #define FILAMENT_RUNOUT_DISTANCE_MM 10
   #else
     #define FILAMENT_RUNOUT_DISTANCE_MM 5
@@ -3898,7 +3917,7 @@
 // Third-party or vendor-customized controller interfaces.
 // Sources should be installed in 'src/lcd/extui'.
 //
-#if ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder6) && (NONE(GraphicLCD, SKRMiniE3V2) || ENABLED(FORCE10SPRODISPLAY))
+#if ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR5Pro, MachineCR10Max, MachineEnder6) && (NONE(GraphicLCD, SKRMiniE3V2) || ENABLED(FORCE10SPRODISPLAY))
   #ifndef FORCE10SPRODISPLAY
     #define FORCE10SPRODISPLAY
   #endif

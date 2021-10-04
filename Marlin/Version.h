@@ -53,6 +53,8 @@
   #define VerChar1 "E6"
 #elif(ENABLED(MachineEnder5Plus))
   #define VerChar1 "E5P"
+#elif(ENABLED(MachineCR5Pro))
+  #define VerChar1 "CR5PH"
 #elif(ENABLED(MachineCR20))
   #define VerChar1 "2"
 #elif(ENABLED(MachineCR10Orig))
@@ -142,6 +144,8 @@
   #define CUSTOM_MACHINE_NAME "Fabbxible Ender-5"
 #elif(ENABLED(MachineEnder5Plus))
   #define CUSTOM_MACHINE_NAME "Fabbxible Ender-5 Plus"
+#elif(ENABLED(MachineCR5Pro))
+  #define CUSTOM_MACHINE_NAME "Fabbxible CR-5 Pro H"
 #elif(ENABLED(MachineCR20))
   #define CUSTOM_MACHINE_NAME "SuPeR CR-20"
 #elif(ENABLED(MachineCR10Orig))
