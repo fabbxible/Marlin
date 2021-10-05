@@ -16,6 +16,7 @@
 //#define MachineCR6
 //#define MachineCR6Max
 //#define MachineEnder6
+//#define MachineCR5Pro
 
 // Touchscreens in development, not tested
 //#define MachineCR5
@@ -418,6 +419,22 @@
   #endif
 #endif
 
+#if ENABLED(MachineCR5Pro)
+  #if NONE(ABL_NCSW, ABL_EZABL, ABL_BLTOUCH)
+    #define ABL_BLTOUCH
+  #endif
+    #define X_STOP_PIN 3
+    #define Y_STOP_PIN 14
+    #define Z_STOP_PIN 18
+  #define lerdgeFilSensor
+  #if DISABLED(ABL_UBL)
+    #define ABL_BI
+  #endif
+  #if NONE(BedAC, BedDC)
+    #define BedDC
+  #endif
+#endif
+
 #if ENABLED(MachineEnder5Plus)
   #if NONE(ABL_NCSW, ABL_EZABL, ABL_BLTOUCH)
     #define ABL_BLTOUCH
@@ -483,7 +500,7 @@
   #endif
 #endif
 
-#if ANY(MachineCRX, MachineCRXPro, MachineEnder5Plus, MachineCR10SPro, MachineCR10Max, MachineEnder6)
+#if ANY(MachineCRX, MachineCRXPro, MachineEnder5Plus, MachineCR5Pro, MachineCR10SPro, MachineCR10Max, MachineEnder6)
   #if NONE(GraphicLCD, OrigLCD, FORCE10SPRODISPLAY)
     #define FORCE10SPRODISPLAY
   #endif
@@ -634,7 +651,7 @@
   #define LCD_SERIAL_PORT 1
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL -1
-#elif ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max) && NONE(GraphicLCD, MachineEnder3V2, Creality422, Creality427, MachineEnder6)
+#elif ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR5Pro, MachineCR10Max) && NONE(GraphicLCD, MachineEnder3V2, Creality422, Creality427, MachineEnder6)
   #define LCD_SERIAL_PORT 2
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 0
@@ -1226,6 +1243,10 @@
         #define  DEFAULT_Kp 25.84//200C  //14.72//Default
         #define  DEFAULT_Ki  2.16//200C  //0.89//Default
         #define  DEFAULT_Kd 77.25//200C  //61.22//Default
+      #elif ENABLED(MachineCR5Pro)
+        #define  DEFAULT_Kp 14.72
+        #define  DEFAULT_Ki 0.89
+        #define  DEFAULT_Kd 61.22
       #elif ENABLED(MachineCRX)
         #define DEFAULT_Kp 19.00
         #define DEFAULT_Ki 1.40
@@ -1510,15 +1531,22 @@
 #endif
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
+#if ENABLED(MachineCR5Pro)
+ #define X_MIN_ENDSTOP_INVERTING true
+ #define Y_MIN_ENDSTOP_INVERTING true
+ #define Z_MIN_ENDSTOP_INVERTING true
+ #define Z_MIN_PROBE_ENDSTOP_INVERTING false //bltouch
+#endif
+
 #if ANY(MachineEnder4, MachineCR2020)
-  #define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  //#define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #else
-  #define X_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  //#define X_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #endif
 #if ENABLED(MachineCR2020)
-  #define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  //#define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #else
-  #define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  //#define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #endif
 #define I_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define J_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
@@ -1531,11 +1559,11 @@
 #define K_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 
 #if NONE(ABL_EZABL, MachineCR2020)
-  #define Z_MIN_ENDSTOP_INVERTING false  // set to true to invert the logic of the endstop.
-  #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
+  //#define Z_MIN_ENDSTOP_INVERTING false  // set to true to invert the logic of the endstop.
+  //#define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
 #else
-  #define Z_MIN_ENDSTOP_INVERTING true  // set to true to invert the logic of the endstop.
-  #define Z_MIN_PROBE_ENDSTOP_INVERTING true // set to true to invert the logic of the probe.
+  //#define Z_MIN_ENDSTOP_INVERTING true  // set to true to invert the logic of the endstop.
+  //#define Z_MIN_PROBE_ENDSTOP_INVERTING true // set to true to invert the logic of the probe.
 #endif
 /**
  * Stepper Drivers
@@ -1665,7 +1693,7 @@
  *
  * :[2,3,4,5,6,7]
  */
-#if ANY(MachineEnder5Plus, CableExtensionNoiseFilter, MachineCR6, MachineCR6Max)
+#if ANY(MachineEnder5Plus, MachineCR5Pro, CableExtensionNoiseFilter, MachineCR6, MachineCR6Max)
   #define ENDSTOP_NOISE_THRESHOLD 2
 #endif
 
@@ -1710,7 +1738,7 @@
   #define EStepsmm 409
 #elif ANY(EZRstruder, MachineCR10SV2)
   #define EStepsmm 93
-#elif ANY(MachineCR10SPro, MachineCR10Max, MachineCRXPro, MachineEnder6)
+#elif ANY(MachineCR10SPro, MachineCR10Max, MachineCRXPro, MachineEnder6, MachineCR5Pro)
   #define EStepsmm 140 //dual drive
 #elif ENABLED(MachineCR2020)
   #define EStepsmm 113
@@ -1718,7 +1746,7 @@
   #define EStepsmm 95
 #endif
 
-#if ENABLED(MachineEnder5Plus)
+#if ANY(MachineEnder5Plus, MachineCR5Pro)
   #define ZStepsmm 800
 #else
   #define ZStepsmm 400
@@ -1743,7 +1771,7 @@
   #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
-#elif ANY(MachineMini, MachineCR20, MachineEnder2, MachineEnder3, MachineEnder3Max, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineEnder5Plus)
+#elif ANY(MachineMini, MachineCR20, MachineEnder2, MachineEnder3, MachineEnder3Max, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineEnder5Plus, MachineCR5Pro)
   #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 40 }
   #define DEFAULT_MAX_ACCELERATION      { 1500, 1500, 100, 1000 }
   #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
@@ -1873,7 +1901,7 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#if NONE(Creality422, Creality427, MachineEnder6) && DISABLED(Creality42XUseZMin)
+#if NONE(Creality422, Creality427, MachineEnder6, MachineCR5Pro) && DISABLED(Creality42XUseZMin)
   #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 #endif
 // Force the use of the probe for Z-axis homing
@@ -2063,6 +2091,10 @@
   #endif
 #elif ALL(MachineCRXPro, HotendStock, ABL_BLTOUCH)
   #define NOZZLE_TO_PROBE_OFFSET { 48, 3, 0 }
+#elif ENABLED(MachineCR5Pro)
+  #define NOZZLE_TO_PROBE_OFFSET { 40, 3, 0 }
+#elif ENABLED(MachineEnder3Max)
+  #define NOZZLE_TO_PROBE_OFFSET { 55, -8, 0 }
 #elif ANY(MachineCR6, MachineCR6Max)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, 0.2 }
 #elif ALL(MachineCRX, HotendStock)
@@ -2291,6 +2323,11 @@
   #define INVERT_Z_DIR true
   #define INVERT_E0_DIR true
   #define INVERT_E1_DIR false
+#elif ENABLED(MachineCR5Pro)
+  #define INVERT_X_DIR true
+  #define INVERT_Y_DIR true
+  #define INVERT_Z_DIR true
+  #define INVERT_E0_DIR true
 #elif ANY(MachineCR10Orig, SKR13, SKR14, SKR14Turbo, SKRMiniE3V2, SKRE3Turbo) && DISABLED(SKR_ReverseSteppers)
   #define INVERT_X_DIR true
   #define INVERT_Y_DIR true
@@ -2318,7 +2355,7 @@
       #define INVERT_Y_DIR false
     #endif
   #endif
-  #if ANY(MachineEnder5Plus, MachineCR2020, MachineEnder6)
+  #if ANY(MachineEnder5Plus, MachineCR2020, MachineEnder6) //MachineCR5Pro Z motor pre-inverted in winding
     #define INVERT_Z_DIR false
   #else
     #define INVERT_Z_DIR true
@@ -2359,14 +2396,14 @@
 
 //#define UNKNOWN_Z_NO_RAISE // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
 #if ANY(MachineEnder5)
-  #define Z_HOMING_HEIGHT 0
+  #define Z_HOMING_HEIGHT 10
 #elif ENABLED(TOUCH_MI_PROBE)
   #define Z_HOMING_HEIGHT 10
 #else
-  #define Z_HOMING_HEIGHT 4  // (in mm) Minimal z height before homing (G28) for Z clearance above the bed, clamps, ...
+  #define Z_HOMING_HEIGHT 10  // (in mm) Minimal z height before homing (G28) for Z clearance above the bed, clamps, ...
 #endif
 
-//#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
+#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
 
 // Direction of endstops when homing; 1=MAX, -1=MIN
 // :[-1,1]
@@ -2448,6 +2485,13 @@
     #endif
     #define Y_MAX_POS 360
     #define ClipClearance 25
+  #elif ENABLED(MachineCR5Pro)
+    #define Y_BED_SIZE 225
+    #define Z_MAX_POS 380
+    #define X_BED_SIZE 300
+    #define X_MAX_POS 300
+    #define Y_MAX_POS 225
+    #define ClipClearance 10
   #elif ENABLED(MachineEnder6)
     #define X_BED_SIZE 260
     #define Y_BED_SIZE 260
@@ -2671,7 +2715,7 @@
   // a feed tube. Requires 4 bytes SRAM per sensor, plus 4 bytes overhead.
   #if ENABLED(FilamentEncoder)
     #define FILAMENT_RUNOUT_DISTANCE_MM 12
-  #elif ANY(MachineEnder5Plus, MachineCR10SPro, MachineCR10SProV2)
+  #elif ANY(MachineEnder5Plus, MachineCR5Pro MachineCR10SPro, MachineCR10SProV2)
     #define FILAMENT_RUNOUT_DISTANCE_MM 10
   #else
     #define FILAMENT_RUNOUT_DISTANCE_MM 5
@@ -2790,10 +2834,6 @@
 #if NONE(MachineCR10Orig, SKRMiniE3V2)
   #define G26_MESH_VALIDATION   // Enable G26 mesh validation
 #endif
-#if ANY(MachineEnder5Plus, MachineCR5Pro, MachineCR10Max) // turn off G26 as no way to stop or cancel with touch screen
- #ifdef G26_MESH_VALIDATION
-  //#undef G26_MESH_VALIDATION
- #endif
 #endif
   #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
@@ -3911,7 +3951,7 @@
 // Third-party or vendor-customized controller interfaces.
 // Sources should be installed in 'src/lcd/extui'.
 //
-#if ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder6) && (NONE(GraphicLCD, SKRMiniE3V2) || ENABLED(FORCE10SPRODISPLAY))
+#if ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR5Pro, MachineCR10Max, MachineEnder6) && (NONE(GraphicLCD, SKRMiniE3V2) || ENABLED(FORCE10SPRODISPLAY))
   #ifndef FORCE10SPRODISPLAY
     #define FORCE10SPRODISPLAY
   #endif
