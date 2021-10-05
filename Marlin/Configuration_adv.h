@@ -614,13 +614,13 @@
 #if ENABLED(CASE_LIGHT_ENABLE)
   #if ENABLED(MachineCR2020)
     #define CASE_LIGHT_PIN 65                  // Override the default pin if needed
-  #elif NONE(MachineCR6, MachineCR6Max)
+   #elif NONE(MachineCR6, MachineCR6Max)
     #define CASE_LIGHT_PIN 12                  // Override the default pin if needed
   #endif
   #define INVERT_CASE_LIGHT false             // Set true if Case Light is ON when pin is LOW
   #define CASE_LIGHT_DEFAULT_ON true          // Set default power-up state on
   #define CASE_LIGHT_DEFAULT_BRIGHTNESS 255   // Set default power-up brightness (0-255, requires PWM pin)
-  #define CASE_LIGHT_MENU                   // Add Case Light options to the LCD menu
+  //#define CASE_LIGHT_MENU                   // Add Case Light options to the LCD menu
   //#define CASE_LIGHT_NO_BRIGHTNESS          // Disable brightness control. Enable for non-PWM lighting.
   //#define CASE_LIGHT_MAX_PWM 128            // Limit PWM duty cycle (0-255)
   #if ENABLED(NEOPIXEL_LED)
@@ -4305,7 +4305,7 @@
 //
 // M42 - Set pin states
 //
-//#define DIRECT_PIN_CONTROL
+#define DIRECT_PIN_CONTROL
 
 //
 // M43 - display pin status, toggle pins, watch pins, watch endstops & toggle LED, test servo probe
@@ -4313,6 +4313,7 @@
 #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11, MachineEnder3V2, Creality422, Creality427, MachineCR6, MachineCR6Max, MachineEnder6)
   #define PINS_DEBUGGING
 #endif
+#define PINS_DEBUGGING
 
 // Enable Marlin dev mode which adds some special commands
 //#define MARLIN_DEV_MODE

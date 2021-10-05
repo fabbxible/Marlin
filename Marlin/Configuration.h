@@ -419,7 +419,23 @@
   #endif
 #endif
 
-#if ANY(MachineEnder5Plus, MachineCR5Pro)
+#if ENABLED(MachineCR5Pro)
+  #if NONE(ABL_NCSW, ABL_EZABL, ABL_BLTOUCH)
+    #define ABL_BLTOUCH
+  #endif
+    #define X_STOP_PIN 3
+    #define Y_STOP_PIN 14
+    #define Z_STOP_PIN 18
+  #define lerdgeFilSensor
+  #if DISABLED(ABL_UBL)
+    #define ABL_BI
+  #endif
+  #if NONE(BedAC, BedDC)
+    #define BedDC
+  #endif
+#endif
+
+#if ENABLED(MachineEnder5Plus)
   #if NONE(ABL_NCSW, ABL_EZABL, ABL_BLTOUCH)
     #define ABL_BLTOUCH
   #endif
@@ -433,9 +449,6 @@
   #endif
   #if NONE(BedAC, BedDC)
     #define BedDC
-  #endif
-  #if ENABLED(MachineCR5Pro)
-    #define FAN_1_PIN -1
   #endif
 #endif
 
@@ -1514,15 +1527,22 @@
 #endif
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
+#if ENABLED(MachineCR5Pro)
+ #define X_MIN_ENDSTOP_INVERTING true
+ #define Y_MIN_ENDSTOP_INVERTING true
+ #define Z_MIN_ENDSTOP_INVERTING true
+ #define Z_MIN_PROBE_ENDSTOP_INVERTING false //bltouch
+#endif
+
 #if ANY(MachineEnder4, MachineCR2020)
-  #define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  //#define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #else
-  #define X_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  //#define X_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #endif
 #if ENABLED(MachineCR2020)
-  #define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  //#define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #else
-  #define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  //#define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #endif
 #define I_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define J_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
@@ -1535,11 +1555,11 @@
 #define K_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 
 #if NONE(ABL_EZABL, MachineCR2020)
-  #define Z_MIN_ENDSTOP_INVERTING false  // set to true to invert the logic of the endstop.
-  #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
+  //#define Z_MIN_ENDSTOP_INVERTING false  // set to true to invert the logic of the endstop.
+  //#define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
 #else
-  #define Z_MIN_ENDSTOP_INVERTING true  // set to true to invert the logic of the endstop.
-  #define Z_MIN_PROBE_ENDSTOP_INVERTING true // set to true to invert the logic of the probe.
+  //#define Z_MIN_ENDSTOP_INVERTING true  // set to true to invert the logic of the endstop.
+  //#define Z_MIN_PROBE_ENDSTOP_INVERTING true // set to true to invert the logic of the probe.
 #endif
 /**
  * Stepper Drivers
@@ -1877,7 +1897,7 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#if NONE(Creality422, Creality427, MachineEnder6) && DISABLED(Creality42XUseZMin)
+#if NONE(Creality422, Creality427, MachineEnder6, MachineCR5Pro) && DISABLED(Creality42XUseZMin)
   #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 #endif
 // Force the use of the probe for Z-axis homing
@@ -2068,7 +2088,7 @@
 #elif ENABLED(MachineCRXPro, HotendStock, ABL_BLTOUCH)
   #define NOZZLE_TO_PROBE_OFFSET { 48, 3, 0 }
 #elif ENABLED(MachineCR5Pro)
-  #define NOZZLE_TO_PROBE_OFFSET { 50, 3, 0 }
+  #define NOZZLE_TO_PROBE_OFFSET { 40, 3, 0 }
 #elif ENABLED(MachineEnder3Max)
   #define NOZZLE_TO_PROBE_OFFSET { 55, -8, 0 }
 #elif ANY(MachineCR6, MachineCR6Max)
@@ -2297,6 +2317,11 @@
   #define INVERT_Z_DIR true
   #define INVERT_E0_DIR true
   #define INVERT_E1_DIR false
+#elif ENABLED(MachineCR5Pro)
+  #define INVERT_X_DIR true
+  #define INVERT_Y_DIR true
+  #define INVERT_Z_DIR true
+  #define INVERT_E0_DIR true
 #elif ANY(MachineCR10Orig, SKR13, SKR14, SKR14Turbo, SKRMiniE3V2, SKRE3Turbo) && DISABLED(SKR_ReverseSteppers)
   #define INVERT_X_DIR true
   #define INVERT_Y_DIR true
@@ -2324,7 +2349,7 @@
       #define INVERT_Y_DIR false
     #endif
   #endif
-  #if ANY(MachineEnder5Plus, MachineCR5Pro, MachineCR2020, MachineEnder6)
+  #if ANY(MachineEnder5Plus, MachineCR2020, MachineEnder6) //MachineCR5Pro Z motor pre-inverted in winding
     #define INVERT_Z_DIR false
   #else
     #define INVERT_Z_DIR true
@@ -2802,6 +2827,11 @@
    */
 #if NONE(MachineCR10Orig, SKRMiniE3V2)
   #define G26_MESH_VALIDATION   // Enable G26 mesh validation
+#endif
+#if ENABLED(MachineCR5Pro)
+  #ifdef G26_MESH_VALIDATION
+    #undef G26_MESH_VALIDATION
+  #endif
 #endif
   #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
