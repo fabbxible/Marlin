@@ -71,7 +71,7 @@
 
 //Enable this if you have an all metal hotend capable of 300c
 #ifndef HotendAllMetal
-  #define HotendAllMetal
+  //#define HotendAllMetal
 #endif
 
 // Enable this if you used a plug and play creality e3d or mosquito kit and kept the Creality thermistor
@@ -1173,7 +1173,7 @@
 #define HEATER_5_MAXTEMP 275
 #define HEATER_6_MAXTEMP 275
 #define HEATER_7_MAXTEMP 275
-#define BED_MAXTEMP      150
+#define BED_MAXTEMP      120
 #define CHAMBER_MAXTEMP  60
 
 /**
@@ -2792,7 +2792,7 @@
 #endif
 #if ANY(MachineEnder5Plus, MachineCR5Pro, MachineCR10Max) // turn off G26 as no way to stop or cancel with touch screen
  #ifdef G26_MESH_VALIDATION
-  #undef G26_MESH_VALIDATION
+  //#undef G26_MESH_VALIDATION
  #endif
 #endif
   #if ENABLED(G26_MESH_VALIDATION)
