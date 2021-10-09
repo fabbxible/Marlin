@@ -2106,7 +2106,7 @@
      #define NOZZLE_TO_PROBE_OFFSET { -44, -10, 0 }
    #endif
 #elif ALL(MachineEnder5Plus, HotendStock)
-  #define NOZZLE_TO_PROBE_OFFSET { -45, -7, TERN(FABB,,-2.5) }
+  #define NOZZLE_TO_PROBE_OFFSET { -45, -7, TERN(FABB,-1.10,-2.5) }
 #elif ANY(MachineCR10SPro, MachineCR10Max) && ENABLED(HotendStock) && DISABLED(MicroswissDirectDrive)
   #define NOZZLE_TO_PROBE_OFFSET { -27, 0, 0 }
 #elif (ANY(ABL_BLTOUCH, ABL_EZABL,ABL_NCSW) && ENABLED(E3DHemera))
