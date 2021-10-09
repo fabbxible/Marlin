@@ -1531,22 +1531,20 @@
 #endif
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
-#if ENABLED(MachineCR5Pro)
- #define X_MIN_ENDSTOP_INVERTING true
- #define Y_MIN_ENDSTOP_INVERTING true
- #define Z_MIN_ENDSTOP_INVERTING true
- #define Z_MIN_PROBE_ENDSTOP_INVERTING false //bltouch
-#endif
+// #if ENABLED(MachineCR5Pro)
+//  #define Z_MIN_ENDSTOP_INVERTING true
+//  #define Z_MIN_PROBE_ENDSTOP_INVERTING false //bltouch
+// #endif
 
-#if ANY(MachineEnder4, MachineCR2020)
-  //#define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+#if ANY(MachineEnder4, MachineCR2020, Machine CR5Pro)
+  #define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #else
-  //#define X_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define X_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #endif
-#if ENABLED(MachineCR2020)
-  //#define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+#if ENABLED(MachineCR2020, MachineCR5Pro)
+  #define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #else
-  //#define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #endif
 #define I_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define J_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
@@ -1559,11 +1557,15 @@
 #define K_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 
 #if NONE(ABL_EZABL, MachineCR2020)
-  //#define Z_MIN_ENDSTOP_INVERTING false  // set to true to invert the logic of the endstop.
-  //#define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
+  #define Z_MIN_ENDSTOP_INVERTING false  // set to true to invert the logic of the endstop.
+  #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
 #else
-  //#define Z_MIN_ENDSTOP_INVERTING true  // set to true to invert the logic of the endstop.
-  //#define Z_MIN_PROBE_ENDSTOP_INVERTING true // set to true to invert the logic of the probe.
+  #define Z_MIN_ENDSTOP_INVERTING true  // set to true to invert the logic of the endstop.
+  #if ENABLED(BLTOUCH)
+    #define Z_MIN_PROBE_ENDSTOP_INVERTING false // bltouch
+  #else
+    #define Z_MIN_PROBE_ENDSTOP_INVERTING true // set to true to invert the logic of the probe.
+  #endif
 #endif
 /**
  * Stepper Drivers
@@ -2104,7 +2106,7 @@
      #define NOZZLE_TO_PROBE_OFFSET { -44, -10, 0 }
    #endif
 #elif ALL(MachineEnder5Plus, HotendStock)
-  #define NOZZLE_TO_PROBE_OFFSET { -45, -7, -2.5 }
+  #define NOZZLE_TO_PROBE_OFFSET { -45, -7, TERN(FABB,,-2.5) }
 #elif ANY(MachineCR10SPro, MachineCR10Max) && ENABLED(HotendStock) && DISABLED(MicroswissDirectDrive)
   #define NOZZLE_TO_PROBE_OFFSET { -27, 0, 0 }
 #elif (ANY(ABL_BLTOUCH, ABL_EZABL,ABL_NCSW) && ENABLED(E3DHemera))
@@ -2480,7 +2482,7 @@
       #define X_BED_SIZE 352
       #define X_MAX_POS 352
     #else
-      #define X_BED_SIZE 360
+      #define X_BED_SIZE TERN(FABB,320,360)
       #define X_MAX_POS 360
     #endif
     #define Y_MAX_POS 360
@@ -2831,11 +2833,10 @@
   /**
    * Enable the G26 Mesh Validation Pattern tool.
    */
-#if NONE(MachineCR10Orig, SKRMiniE3V2)
-  #define G26_MESH_VALIDATION   // Enable G26 mesh validation
-#endif
-#endif
-  #if ENABLED(G26_MESH_VALIDATION)
+  #if NONE(MachineCR10Orig, SKRMiniE3V2)
+    #define G26_MESH_VALIDATION   // Enable G26 mesh validation
+  #endif
+ #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
     #define MESH_TEST_LAYER_HEIGHT   0.2  // (mm) Default layer height for G26.
     #define MESH_TEST_HOTEND_TEMP  210    // (°C) Default nozzle temperature for G26.
@@ -2844,7 +2845,6 @@
     #define G26_XY_FEEDRATE_TRAVEL 100    // (mm/s) Feedrate for G26 XY travel moves.
     #define G26_RETRACT_MULTIPLIER   1.0  // G26 Q (retraction) used by default between mesh test elements.
   #endif
-
 #endif
 
 #if ENABLED(MeshFast)

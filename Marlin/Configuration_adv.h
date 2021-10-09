@@ -1962,6 +1962,11 @@
 #if NONE(MachineCR10Orig, SKRMiniE3V2, LowMemoryBoard, MachineCR10SPro, MachineCR10Max, SKR13, SKR14, SKR14Turbo, MachineCR10SV2, CrealitySilentBoard) || ENABLED(OrigLA) || (ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11) && ENABLED(SKR_UART))
   #define LIN_ADVANCE
 #endif
+#if ENABLED(FABB)
+  #ifndef LIN_ADVANCE
+    #define LIN_ADVANCE
+  #endif
+#endif
 #if ENABLED(LIN_ADVANCE)
   //#define EXTRA_LIN_ADVANCE_K // Enable for second linear advance constants
   #define LIN_ADVANCE_K 0.0    // Unit: mm compression per 1mm/s extruder speed
@@ -2004,7 +2009,9 @@
  * the probe to be unable to reach any points.
  */
 #if PROBE_SELECTED && !IS_KINEMATIC
-  //#define PROBING_MARGIN_LEFT PROBING_MARGIN
+  #if ENABLED(FABB)
+    #define PROBING_MARGIN_LEFT PROBING_MARGIN
+  #endif
   //#define PROBING_MARGIN_RIGHT PROBING_MARGIN
   #define PROBING_MARGIN_FRONT (PROBING_MARGIN + ClipClearance)
   #define PROBING_MARGIN_BACK (PROBING_MARGIN + ClipClearance)
