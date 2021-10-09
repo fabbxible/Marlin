@@ -2483,7 +2483,7 @@
       #define X_MAX_POS 352
     #else
       #define X_BED_SIZE TERN(FABB,320,360)
-      #define X_MAX_POS 360
+      #define X_MAX_POS TERN(FABB,320,360)
     #endif
     #define Y_MAX_POS 360
     #define ClipClearance 25
