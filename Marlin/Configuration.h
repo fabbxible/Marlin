@@ -1240,9 +1240,9 @@
         #define DEFAULT_Ki 2.17
         #define DEFAULT_Kd 73.44
       #elif ENABLED(MachineEnder5Plus)
-        #define  DEFAULT_Kp 25.84//200C  //14.72//Default
-        #define  DEFAULT_Ki  2.16//200C  //0.89//Default
-        #define  DEFAULT_Kd 77.25//200C  //61.22//Default
+        #define  DEFAULT_Kp TERN(FABB,40.84,25.84)//200C  //14.72//Default
+        #define  DEFAULT_Ki TERN(FABB,6.01,2.16)//200C  //0.89//Default
+        #define  DEFAULT_Kd TERN(FABB,69.42,77.25)//200C  //61.22//Default
       #elif ENABLED(MachineCR5Pro)
         #define  DEFAULT_Kp 14.72
         #define  DEFAULT_Ki 0.89
@@ -1341,9 +1341,9 @@
     #define DEFAULT_bedKi 1.17
     #define DEFAULT_bedKd 1349.52
   #elif ENABLED(MachineEnder5Plus)
-    #define  DEFAULT_bedKp 112.27//60C
-    #define  DEFAULT_bedKi   8.78//60C
-    #define  DEFAULT_bedKd 956.82//60C   
+    #define  DEFAULT_bedKp TERN(FABB,75.87,112.27)//60C
+    #define  DEFAULT_bedKi TERN(FABB,5.09,8.78)//60C
+    #define  DEFAULT_bedKd TERN(FABB,754.14,956.82)//60C   
   #else
     #define  DEFAULT_bedKp 690.34
     #define  DEFAULT_bedKi 111.47
@@ -2655,7 +2655,7 @@
   #define FILAMENT_RUNOUT_SENSOR
 #endif
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-  #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
+  #define FIL_RUNOUT_ENABLED_DEFAULT TERN(FABB,false,true) // Enable the sensor on startup. Override with M412 followed by M500.
   #if ENABLED(DualFilSensors)
     #if DISABLED(SKR13, SKR14, SKR14Turbo, SKRPRO11, SKRE3Turbo)
       #define NUM_RUNOUT_SENSORS   2     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
