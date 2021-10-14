@@ -1804,8 +1804,8 @@
   #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   750    // X, Y, Z acceleration for travel (non printing) moves
 #elif ANY(MachineCR2020, MachineEnder6)
-  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 40 }
-  #define DEFAULT_MAX_ACCELERATION      { 1500, 1500, 100, 1500 }
+  #define DEFAULT_MAX_FEEDRATE          { 200, 200, 10, 40 }
+  #define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 4000 }
   #define DEFAULT_ACCELERATION          2000    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves    
@@ -2107,6 +2107,8 @@
    #endif
 #elif ALL(MachineEnder5Plus, HotendStock)
   #define NOZZLE_TO_PROBE_OFFSET { -45, -7, TERN(FABB,-1.10,-2.5) }
+#elif ENABLED(MahcineEnder6)
+  #define NOZZLE_TO_PROBE_OFFSET { -15, -6, -2 }
 #elif ANY(MachineCR10SPro, MachineCR10Max) && ENABLED(HotendStock) && DISABLED(MicroswissDirectDrive)
   #define NOZZLE_TO_PROBE_OFFSET { -27, 0, 0 }
 #elif (ANY(ABL_BLTOUCH, ABL_EZABL,ABL_NCSW) && ENABLED(E3DHemera))
@@ -2149,10 +2151,10 @@
 #endif
 
 // X and Y axis travel speed (mm/min) between probes
-#define XY_PROBE_FEEDRATE (200*60)
+#define XY_PROBE_FEEDRATE (150*60)
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_FEEDRATE_FAST (12*60)
+#define Z_PROBE_FEEDRATE_FAST (8*60)
 
 // Feedrate (mm/min) for the "accurate" probe of each point
 #define Z_PROBE_FEEDRATE_SLOW (Z_PROBE_FEEDRATE_FAST / 2)
@@ -2217,16 +2219,16 @@
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
 #if ENABLED(MachineEnder5)
-  #define Z_CLEARANCE_DEPLOY_PROBE   0 // Z Clearance for Deploy/Stow
+  #define Z_CLEARANCE_DEPLOY_PROBE   5 // Z Clearance for Deploy/Stow
 #else
-  #define Z_CLEARANCE_DEPLOY_PROBE   10 // Z Clearance for Deploy/Stow
+  #define Z_CLEARANCE_DEPLOY_PROBE   5 // Z Clearance for Deploy/Stow
 #endif
 #if ANY(MachineCR6, MachineCR6Max)
   #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
   #define Z_CLEARANCE_MULTI_PROBE     3 // Z Clearance between multiple probes
 #else
-  #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
-  #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
+  #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
+  #define Z_CLEARANCE_MULTI_PROBE     3 // Z Clearance between multiple probes
 #endif
 #if DISABLED(TOUCH_MI_PROBE)
   #define Z_AFTER_PROBING           5 // Z position after probing is done
@@ -2265,7 +2267,7 @@
 #endif
 //#define PROBING_FANS_OFF          // Turn fans off when probing
 //#define PROBING_STEPPERS_OFF      // Turn steppers off (unless needed to hold position) when probing
-//#define DELAY_BEFORE_PROBING 200  // (ms) To prevent vibrations from triggering piezo sensors
+#define DELAY_BEFORE_PROBING 200  // (ms) To prevent vibrations from triggering piezo sensors
 
 // Require minimum nozzle and/or bed temperature for probing
 #if ANY(MachineCR6, MachineCR6Max)
@@ -2818,7 +2820,7 @@
   #if NONE(MachineCR10Orig, SKRMiniE3V2)
     #define ENABLE_LEVELING_FADE_HEIGHT
     #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
-      #define DEFAULT_LEVELING_FADE_HEIGHT 0.0 // (mm) Default fade height.
+      #define DEFAULT_LEVELING_FADE_HEIGHT 10.0 // (mm) Default fade height.
     #endif
   #endif
 
@@ -2839,11 +2841,11 @@
  #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
     #define MESH_TEST_LAYER_HEIGHT   0.2  // (mm) Default layer height for G26.
-    #define MESH_TEST_HOTEND_TEMP  210    // (°C) Default nozzle temperature for G26.
-    #define MESH_TEST_BED_TEMP      60    // (°C) Default bed temperature for G26.
+    #define MESH_TEST_HOTEND_TEMP  200    // (°C) Default nozzle temperature for G26.
+    #define MESH_TEST_BED_TEMP      55    // (°C) Default bed temperature for G26.
     #define G26_XY_FEEDRATE         20    // (mm/s) Feedrate for G26 XY moves.
     #define G26_XY_FEEDRATE_TRAVEL 100    // (mm/s) Feedrate for G26 XY travel moves.
-    #define G26_RETRACT_MULTIPLIER   1.0  // G26 Q (retraction) used by default between mesh test elements.
+    #define G26_RETRACT_MULTIPLIER   2.0  // G26 Q (retraction) used by default between mesh test elements.
   #endif
 #endif
 
