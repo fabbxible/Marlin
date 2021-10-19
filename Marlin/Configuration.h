@@ -17,6 +17,9 @@
 //#define MachineCR6Max
 //#define MachineEnder6
 //#define MachineCR5Pro
+//#define MachineCR10Smart
+//#define MachineCR200B
+//#define MachineEnder7
 
 // Touchscreens in development, not tested
 //#define MachineCR5
@@ -132,7 +135,8 @@
 //#define Big_UI // Lightweight status screen, saves CPU cycles
 
 // Touchscreen options - only 32 bit boards have the open serial ports to use with graphics displays above
-//#define FORCE10SPRODISPLAY
+//#define FORCE10SPRODISPLAY //DWIN_T5 //e5+, e6, cr5pro, cr10max, cr10spro
+//#define DWIN_T5L //cr200b, cr10smart, ender7, cr6se, cr6max
 
 //#define AddonFilSensor //Adds a filament runout sensor to the CR20 or Ender 4
 //#define lerdgeFilSensor //Using lerdge filament sensor, which is opposite polarity to stock
@@ -524,14 +528,14 @@
 
 #if ANY(MachineEnder3Pro422, MachineEnder3Pro427)
   #define MachineEnder3
-  #ifndef FORCE10SPRODISPLAY
+  #ifndef DWIN_T5L
     #define RET6_12864_LCD
   #endif
 #endif
 
 #if ANY(MachineEnder5Pro422, MachineEnder5Pro427)
   #define MachineEnder5
-  #ifndef FORCE10SPRODISPLAY
+  #ifndef DWIN_T5L
     #define RET6_12864_LCD
   #endif
 #endif
@@ -553,7 +557,7 @@
 #endif
 
 #if EITHER(Creality422, Creality427) && DISABLED(MachineEnder3V2)
-  #ifndef FORCE10SPRODISPLAY
+  #ifndef DWIN_T5L
     #define RET6_12864_LCD
   #endif
 #endif
@@ -613,11 +617,11 @@
   #define POWER_LOSS_RECOVERY
 #endif
 
-#if NONE(MachineCR10Orig, MachineEnder4, MachineCR10SPro, MachineCRX, MachineCR10Max, MachineEnder5Plus, SKRMiniE3V2, FORCE10SPRODISPLAY) || ENABLED(GraphicLCD)
+#if NONE(MachineCR10Orig, MachineEnder4, MachineCR10SPro, MachineCRX, MachineCR10Max, MachineEnder5Plus, SKRMiniE3V2, FORCE10SPRODISPLAY) || ANY(GraphicLCD, DWIN_T5L)
   #define SHOW_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
-  #if DISABLED(MachineEnder3V2, MachineCR6, MachineCR6Max)
+  #if DISABLED(MachineEnder3V2, MachineCR6, MachineCR6Max, DWIN_T5L)
     #define SHOW_CUSTOM_BOOTSCREEN
     // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
     #define CUSTOM_STATUS_SCREEN_IMAGE
@@ -665,7 +669,7 @@
   #define LCD_SERIAL_PORT 3
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 1
-#elif ANY(Creality422, Creality427) && DISABLED(MachineEnder3V2)
+#elif ANY(Creality422, Creality427) && NONE(MachineEnder3V2, DWIN_T5L)
   #define SERIAL_PORT_2 3
 #endif
 
@@ -1136,12 +1140,12 @@
   #define TEMP_WINDOW              5  // (°C) Temperature proximity for the "temperature reached" timer
   #define TEMP_HYSTERESIS          7  // (°C) Temperature proximity considered "close enough" to the target
 #else
-  #define TEMP_WINDOW              1  // (°C) Temperature proximity for the "temperature reached" timer
+  #define TEMP_WINDOW              2  // (°C) Temperature proximity for the "temperature reached" timer
   #define TEMP_HYSTERESIS          3  // (°C) Temperature proximity considered "close enough" to the target
 #endif
 
-#define TEMP_BED_RESIDENCY_TIME 5  // (seconds) Time to wait for bed to "settle" in M190
-#define TEMP_BED_WINDOW          1  // (°C) Temperature proximity for the "temperature reached" timer
+#define TEMP_BED_RESIDENCY_TIME  5  // (seconds) Time to wait for bed to "settle" in M190
+#define TEMP_BED_WINDOW          2  // (°C) Temperature proximity for the "temperature reached" timer
 #define TEMP_BED_HYSTERESIS      3  // (°C) Temperature proximity considered "close enough" to the target
 
 /**
@@ -2952,7 +2956,7 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-#if NONE(ABL_EZABL, ABL_NCSW, ABL_BLTOUCH, ABL_TOUCH_MI, SKRMiniE3V2, MachineEnder3V2, FORCE10SPRODISPLAY, MachineCR6, MachineCR6Max) && (DISABLED(MachineCRX) || ENABLED(GraphicLCD))
+#if NONE(ABL_EZABL, ABL_NCSW, ABL_BLTOUCH, ABL_TOUCH_MI, SKRMiniE3V2, MachineEnder3V2, FORCE10SPRODISPLAY, DWIN_T5L, MachineCR6, MachineCR6Max) && (DISABLED(MachineCRX) || ENABLED(GraphicLCD))
   #define LCD_BED_LEVELING
 #endif
 
@@ -3639,9 +3643,9 @@
   #define MKS_MINI_12864
 #elif ENABLED(MachineEnder3V2)
   #define DWIN_CREALITY_LCD
-#elif ANY(OrigLCD, MachineCR10Orig, MachineEnder3Pro422, MachineEnder3Pro427, MachineEnder3Max, MachineEnder5Pro422, MachineEnder5Pro427, SKRMiniE3V2, SKRE3Turbo) && DISABLED(GraphicLCD)
+#elif ANY(OrigLCD, MachineCR10Orig, MachineEnder3Pro422, MachineEnder3Pro427, MachineEnder3Max, MachineEnder5Pro422, MachineEnder5Pro427, SKRMiniE3V2, SKRE3Turbo) && NONE(GraphicLCD, DWIN_T5L)
   #define CR10_STOCKDISPLAY
-#elif NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, OrigLCD, MachineCR10Orig, SKRMiniE3V2, FORCE10SPRODISPLAY, MachineCR6, MachineCR6Max) || ENABLED(GraphicLCD)
+#elif NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, OrigLCD, MachineCR10Orig, SKRMiniE3V2, FORCE10SPRODISPLAY, DWIN_T5L, MachineCR6, MachineCR6Max) || ENABLED(GraphicLCD)
   #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 #endif
 //
@@ -3933,7 +3937,7 @@
 //
 // CR-6 OEM touch screen. A DWIN display with touch.
 //
-#if ANY(MachineCR6, MachineCR6Max)
+#if ANY(MachineCR6, MachineCR6Max) || ENABLED(DWIN_T5L)
   #define DGUS_LCD_UI_CREALITY_TOUCH
 #endif
 

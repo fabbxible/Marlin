@@ -440,14 +440,14 @@
 
 // The number of consecutive low temperature errors that can occur
 // before a min_temp_error is triggered. (Shouldn't be more than 10.)
-//#define MAX_CONSECUTIVE_LOW_TEMPERATURE_ERROR_ALLOWED 0
+//#define MAX_CONSECUTIVE_LOW_TEMPERATURE_ERROR_ALLOWED 1
 
 // The number of milliseconds a hotend will preheat before starting to check
 // the temperature. This value should NOT be set to the time it takes the
 // hot end to reach the target temperature, but the time it takes to reach
 // the minimum temperature your thermistor can read. The lower the better/safer.
 // This shouldn't need to be more than 30 seconds (30000)
-//#define MILLISECONDS_PREHEAT_TIME 0
+//#define MILLISECONDS_PREHEAT_TIME 5000
 
 // @section extruder
 
@@ -526,7 +526,7 @@
  *
  * Define one or both of these to override the default 0-255 range.
  */
-//#define FAN_MIN_PWM 50
+#define FAN_MIN_PWM 25
 //#define FAN_MAX_PWM 128
 
 /**
@@ -608,7 +608,7 @@
 /**
  * M355 Case Light on-off / brightness
  */
-#if ANY(EnclosureLight, MachineCR6, MachineCR6Max)
+#if ANY(EnclosureLight, MachineCR6, MachineCR6Max MachineCR10Smart)
   #define CASE_LIGHT_ENABLE
 #endif
 #if ENABLED(CASE_LIGHT_ENABLE)

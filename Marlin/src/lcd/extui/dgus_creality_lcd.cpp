@@ -234,6 +234,7 @@ bool hasPrintTimer = false;
           PIDHandler::result_message = GET_TEXT(MSG_PID_AUTOTUNE_DONE);
           ScreenHandler.setstatusmessagePGM(PIDHandler::result_message);
         break;
+        case PID_STARTED: break;        
       }
     }
   #endif

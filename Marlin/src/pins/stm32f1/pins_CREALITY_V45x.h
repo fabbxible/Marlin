@@ -27,7 +27,7 @@
 
 #include "env_validate.h"
 
-#define DEFAULT_MACHINE_NAME "Creality3D"
+#define DEFAULT_MACHINE_NAME "CR-6"
 
 //
 // Release PB4 (Z_STEP_PIN) from JTAG NRST role

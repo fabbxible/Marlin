@@ -9,7 +9,7 @@ def after_build(source,target,env):
     #print("after_build")
     
     env_name = str(env['PROGNAME'])
-    machine = {"CR10Max", "E5P"}
+    machine = {"CR10Max", "E5P", "CR5ProH", "CR5PH"}
     
     if any(x in env_name for x in machine):
         format = ".hex"
