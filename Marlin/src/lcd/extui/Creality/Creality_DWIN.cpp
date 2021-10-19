@@ -73,7 +73,7 @@ namespace ExtUI
   uint16_t idleThrottling = 0;
 
   #if HAS_PID_HEATING
-    uint16_t pid_hotendAutoTemp = 150;
+    uint16_t pid_hotendAutoTemp = 200;
     uint16_t pid_bedAutoTemp = 70;
   #endif
 
@@ -358,7 +358,9 @@ void onIdle()
 		{
 			NozzleTempStatus[0] = 0;
 			rtscheck.RTS_SndData(10 * ChangeMaterialbuf[0], FilementUnit1);
-			rtscheck.RTS_SndData(10 * ChangeMaterialbuf[1], FilementUnit2);
+      #if ENABLED(MachineCRX)
+			  rtscheck.RTS_SndData(10 * ChangeMaterialbuf[1], FilementUnit2); //disable 2nd extruder
+      #endif
       SERIAL_ECHOLNPGM_P(PSTR("==Heating Done Change Filament=="));
 			rtscheck.RTS_SndData(ExchangePageBase + 65, ExchangepageAddr);
 		}
@@ -820,15 +822,23 @@ void RTSSHOW::RTS_HandleData()
       }
       else if (recdat.data[0] == 4)
       {
-        if (PrintMode) // normal printing mode
+        if (PrintMode) // normal printing mode 20211019 change to case light
         {
           RTS_SndData(2, FanKeyIcon + 1);
-          PrintMode = false;
+          #if HAS_FAN1
+            setTargetFan_percent(0, FAN1);
+          #else
+            PrintMode = false;
+          #endif
         }
         else // power saving mode
         {
           RTS_SndData(3, FanKeyIcon + 1);
-          PrintMode = true;
+          #if HAS_FAN1
+            setTargetFan_percent(100, FAN1);
+          #else
+            PrintMode = true;
+          #endif
         }
       }
       break;
@@ -1130,7 +1140,9 @@ void RTSSHOW::RTS_HandleData()
         memset(ChangeMaterialbuf, 0, sizeof(ChangeMaterialbuf));
         ChangeMaterialbuf[1] = ChangeMaterialbuf[0] = 10;
         RTS_SndData(10 * ChangeMaterialbuf[0], FilementUnit1); //It's ChangeMaterialbuf for show,instead of current_position[E_AXIS] in them.
-        RTS_SndData(10 * ChangeMaterialbuf[1], FilementUnit2);
+        #if ENABLED(MachineCRX)
+          RTS_SndData(10 * ChangeMaterialbuf[1], FilementUnit2);
+        #endif
         RTS_SndData(getActualTemp_celsius(H0), NozzleTemp);
         RTS_SndData(getTargetTemp_celsius(H0), NozzlePreheat);
         delay_ms(2);
@@ -1186,9 +1198,9 @@ void RTSSHOW::RTS_HandleData()
         }
         case 2: // Z-axis to Up
         {
-          if (WITHIN((getZOffset_mm() + 0.1), Z_PROBE_OFFSET_RANGE_MIN, Z_PROBE_OFFSET_RANGE_MAX))
+          if (WITHIN((getZOffset_mm() + 0.01), Z_PROBE_OFFSET_RANGE_MIN, Z_PROBE_OFFSET_RANGE_MAX))
           {
-            smartAdjustAxis_steps((getAxisSteps_per_mm(Z) / 10), (axis_t)Z, false);
+            smartAdjustAxis_steps((getAxisSteps_per_mm(Z) / 100), (axis_t)Z, false); //change from 0.1mm to 0.01mm steps
             //SERIAL_ECHOLNPAIR("Babystep Pos Steps : ", (int)(getAxisSteps_per_mm(Z) / 10));
             //setZOffset_mm(getZOffset_mm() + 0.1);
             RTS_SndData(getZOffset_mm() * 100, ProbeOffset_Z);
@@ -1201,9 +1213,9 @@ void RTSSHOW::RTS_HandleData()
         }
         case 3: // Z-axis to Down
         {
-          if (WITHIN((getZOffset_mm() - 0.1), Z_PROBE_OFFSET_RANGE_MIN, Z_PROBE_OFFSET_RANGE_MAX))
+          if (WITHIN((getZOffset_mm() - 0.01), Z_PROBE_OFFSET_RANGE_MIN, Z_PROBE_OFFSET_RANGE_MAX))
           {
-            smartAdjustAxis_steps(((getAxisSteps_per_mm(Z) / 10) * -1), (axis_t)Z, false);
+            smartAdjustAxis_steps(((getAxisSteps_per_mm(Z) / 100) * -1), (axis_t)Z, false); //change from 0.1mm to 0.01mm steps
             //SERIAL_ECHOLNPAIR("Babystep Neg Steps : ", (int)((getAxisSteps_per_mm(Z) / 10) * -1));
             //babystepAxis_steps((((int)getAxisSteps_per_mm(Z) / 10) * -1), (axis_t)Z);
             //setZOffset_mm(getZOffset_mm() - 0.1);
@@ -1215,7 +1227,7 @@ void RTSSHOW::RTS_HandleData()
           }
           break;
         }
-        case 4: // Assitant Level
+        case 4: // Assitant Level AUX Leveling
         {
           #if HAS_MESH
             setLevelingActive(false);
@@ -1293,11 +1305,13 @@ void RTSSHOW::RTS_HandleData()
             {
               RTS_SndData(3, AutoLevelIcon);
               setLevelingActive(true);
+              injectCommands_P(PSTR("M500"));
             }
             else //turn off the Autolevel
             {
               RTS_SndData(2, AutoLevelIcon);
               setLevelingActive(false);
+              injectCommands_P(PSTR("M500"));
             }
           #endif
           RTS_SndData(getZOffset_mm() * 100, ProbeOffset_Z);
@@ -1472,12 +1486,16 @@ void RTSSHOW::RTS_HandleData()
           }
           case 3: // Unload filement2
           {
-            setAxisPosition_mm((getAxisPosition_mm(E1) - ChangeMaterialbuf[1]), E1);
+            #if ENABLED(MachineCRX)
+              setAxisPosition_mm((getAxisPosition_mm(E1) - ChangeMaterialbuf[1]), E1);
+            #endif
             break;
           }
           case 4: // Load filement2
           {
-            setAxisPosition_mm((getAxisPosition_mm(E1) + ChangeMaterialbuf[1]), E1);
+            #if ENABLED(MachineCRX)
+              setAxisPosition_mm((getAxisPosition_mm(E1) + ChangeMaterialbuf[1]), E1);
+            #endif
             break;
           }
           case 5: // sure to heat
@@ -1514,7 +1532,9 @@ void RTSSHOW::RTS_HandleData()
             break;
         }
         RTS_SndData(10 * ChangeMaterialbuf[0], FilementUnit1); //It's ChangeMaterialbuf for show,instead of current_position[E_AXIS] in them.
-        RTS_SndData(10 * ChangeMaterialbuf[1], FilementUnit2);
+        #if ENABLED(MachineCRX)
+          RTS_SndData(10 * ChangeMaterialbuf[1], FilementUnit2);
+        #endif
       }
       else if (recdat.addr == FilementUnit1)
       {
@@ -1522,7 +1542,9 @@ void RTSSHOW::RTS_HandleData()
       }
       else if (recdat.addr == FilementUnit2)
       {
-        ChangeMaterialbuf[1] = ((float)recdat.data[0]) / 10;
+        #if ENABLED(MachineCRX)
+          ChangeMaterialbuf[1] = ((float)recdat.data[0]) / 10;
+        #endif
       }
       break;
 
@@ -2067,7 +2089,7 @@ void onUserConfirmRequired(const char *const msg)
 {
   PrinterStatusKey[1] = 4;
   TPShowStatus = false;
-  rtscheck.RTS_SndData(ExchangePageBase + 78, ExchangepageAddr);
+  rtscheck.RTS_SndData(ExchangePageBase + 81, ExchangepageAddr); //from 78
 	SERIAL_ECHOLNPGM_P(PSTR("==onUserConfirmRequired=="));
   onStatusChanged(msg);
 }
@@ -2242,7 +2264,23 @@ void onConfigurationStoreRead(bool success)
       rtscheck.RTS_SndData((unsigned int)(getBedPIDValues_Ki() * 10), BedPID_I);
       rtscheck.RTS_SndData((unsigned int)(getBedPIDValues_Kd() * 10), BedPID_D);
     #endif
-    onStatusChanged_P(PSTR("PID Tune Finished"));
+
+    switch (rst) {
+      case PID_BAD_EXTRUDER_NUM:
+        onStatusChanged_P(PSTR("PID Bad Extruder Number"));
+        break;
+      case PID_TEMP_TOO_HIGH:
+        onStatusChanged_P(PSTR("PID Temperature Too High"));
+        break;
+      case PID_TUNING_TIMEOUT:
+        onStatusChanged_P(PSTR("PID Tune Timeout"));
+        break;
+      case PID_DONE:
+        onStatusChanged_P(PSTR("PID Tune Finished"));
+       break;
+      case PID_STARTED: break;
+      }
+    
   }
 #endif
 void onMeshLevelingStart() {

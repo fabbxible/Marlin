@@ -524,12 +524,16 @@
 
 #if ANY(MachineEnder3Pro422, MachineEnder3Pro427)
   #define MachineEnder3
-  #define RET6_12864_LCD
+  #ifndef FORCE10SPRODISPLAY
+    #define RET6_12864_LCD
+  #endif
 #endif
 
 #if ANY(MachineEnder5Pro422, MachineEnder5Pro427)
   #define MachineEnder5
-  #define RET6_12864_LCD
+  #ifndef FORCE10SPRODISPLAY
+    #define RET6_12864_LCD
+  #endif
 #endif
 
 #if ANY(MachineEnder3Max, MachineEnder3V2, MachineEnder3Pro422, MachineEnder5Pro422) && DISABLED(Creality427)
@@ -549,7 +553,9 @@
 #endif
 
 #if EITHER(Creality422, Creality427) && DISABLED(MachineEnder3V2)
-  #define RET6_12864_LCD
+  #ifndef FORCE10SPRODISPLAY
+    #define RET6_12864_LCD
+  #endif
 #endif
 
 #if NONE(HotendStock, HotendE3D)
@@ -1679,7 +1685,7 @@
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
-#if ENABLED(MachineEnder3V2) && NONE(SKRE3Turbo, SKR14Turbo, SKR14, SKR13)
+#if ANY(Creality422, Creality427, MachineEnder6, MachineCR6, MachineCR6MAX) && NONE(SKRE3Turbo, SKR14Turbo, SKR14, SKR13)
   #define ENDSTOP_INTERRUPTS_FEATURE
 #endif
 
@@ -1695,12 +1701,12 @@
  *
  * :[2,3,4,5,6,7]
  */
-#if ANY(MachineEnder5Plus, MachineCR5Pro, CableExtensionNoiseFilter, MachineCR6, MachineCR6Max)
+#if ANY(MachineEnder5Plus, MachineCR5Pro, CableExtensionNoiseFilter, MachineCR6, MachineCR6Max, MachineEnder6)
   #define ENDSTOP_NOISE_THRESHOLD 2
 #endif
 
 // Check for stuck or disconnected endstops during homing moves.
-//#define DETECT_BROKEN_ENDSTOP
+#define DETECT_BROKEN_ENDSTOP
 
 //=============================================================================
 //============================== Movement Settings ============================
@@ -1774,16 +1780,16 @@
   #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
 #elif ANY(MachineMini, MachineCR20, MachineEnder2, MachineEnder3, MachineEnder3Max, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineEnder5Plus, MachineCR5Pro)
-  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 40 }
-  #define DEFAULT_MAX_ACCELERATION      { 1500, 1500, 100, 1000 }
-  #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
-  #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
-  #define DEFAULT_TRAVEL_ACCELERATION   1000    // X, Y, Z acceleration for travel (non printing) moves
+  #define DEFAULT_MAX_FEEDRATE          { 200, 200, 10, 50 }
+  #define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 5000 }
+  #define DEFAULT_ACCELERATION          1500    // X, Y, Z and E acceleration for printing moves
+  #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
+  #define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves
 #elif (ANY(MachineCR10SPro, MachineCR6, MachineCR6Max))
-  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 40 }
-  #define DEFAULT_MAX_ACCELERATION      { 1000, 750, 100, 1000 }
-  #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
-  #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
+  #define DEFAULT_MAX_FEEDRATE          { 200, 200, 10, 50 }
+  #define DEFAULT_MAX_ACCELERATION      { 2000, 1000, 100, 5000 }
+  #define DEFAULT_ACCELERATION          1000    // X, Y, Z and E acceleration for printing moves
+  #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   1000    // X, Y, Z acceleration for travel (non printing) moves
 #elif (ENABLED(MachineCR10Std))
   #define DEFAULT_MAX_FEEDRATE          { 500, 500, 10, 75 }
@@ -1799,12 +1805,12 @@
   #define DEFAULT_TRAVEL_ACCELERATION   300    // X, Y, Z acceleration for travel (non printing) moves
 #elif ANY(MachineS5, MachineCR10Max)
   #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 40 }
-  #define DEFAULT_MAX_ACCELERATION      { 1000, 750, 100, 1000 }
+  #define DEFAULT_MAX_ACCELERATION      { 1000, 750, 100, 5000 }
   #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
-  #define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
+  #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   750    // X, Y, Z acceleration for travel (non printing) moves
 #elif ANY(MachineCR2020, MachineEnder6)
-  #define DEFAULT_MAX_FEEDRATE          { 200, 200, 10, 40 }
+  #define DEFAULT_MAX_FEEDRATE          { 200, 200, 10, 50 }
   #define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 4000 }
   #define DEFAULT_ACCELERATION          2000    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
@@ -1862,7 +1868,7 @@
   #endif
 #endif
 
-#define DEFAULT_EJERK    5.0  // May be used by Linear Advance
+#define DEFAULT_EJERK    10.0  // May be used by Linear Advance
 
 /**
  * Junction Deviation Factor
@@ -2122,7 +2128,7 @@
 #elif ENABLED(MicroswissDirectDrive) && ENABLED(ABL_BLTOUCH)
   #define NOZZLE_TO_PROBE_OFFSET { -45, -5, 0 }
 #elif ALL(ABL_BLTOUCH, HotendStock)
-  #define NOZZLE_TO_PROBE_OFFSET { -41, -8, 0 }
+  #define NOZZLE_TO_PROBE_OFFSET { -41, -8, -1 }
 #elif ((ANY(ABL_EZABL, ABL_NCSW)) && ENABLED(HotendStock))
   #if ENABLED(CREALITY_ABL_MOUNT)
     #define NOZZLE_TO_PROBE_OFFSET { -55, -15, 0 }
@@ -2151,7 +2157,7 @@
 #endif
 
 // X and Y axis travel speed (mm/min) between probes
-#define XY_PROBE_FEEDRATE (150*60)
+#define XY_PROBE_FEEDRATE (160*60)
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_FEEDRATE_FAST (8*60)
@@ -2237,8 +2243,8 @@
 #define Z_PROBE_LOW_POINT          -4 // Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Z probe offset
-#define Z_PROBE_OFFSET_RANGE_MIN -9
-#define Z_PROBE_OFFSET_RANGE_MAX 9
+#define Z_PROBE_OFFSET_RANGE_MIN -5
+#define Z_PROBE_OFFSET_RANGE_MAX 2
 
 // Enable the M48 repeatability test to test probe accuracy
 #if ANY(ABL_EZABL, ABL_BLTOUCH, ABL_NCSW, ABL_TOUCH_MI, MachineCR6, MachineCR6Max) && NONE(MachineCR10Orig, SKRMiniE3V2, SKRE3Turbo)
@@ -2653,11 +2659,15 @@
  * RAMPS-based boards use SERVO3_PIN for the first runout sensor.
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  */
-#if NONE(MachineCR10Orig, MachineCR20, MachineEnder3, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineCRX, Melzi_To_SBoardUpgrade) || ANY(AddonFilSensor, lerdgeFilSensor, DualFilSensors)
-  #define FILAMENT_RUNOUT_SENSOR
-#endif
+//#if NONE(MachineCR10Orig, MachineCR20, MachineEnder3, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineCRX, Melzi_To_SBoardUpgrade) || ANY(AddonFilSensor, lerdgeFilSensor, DualFilSensors)
+  #define FILAMENT_RUNOUT_SENSOR //enable for all
+//#endif
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-  #define FIL_RUNOUT_ENABLED_DEFAULT TERN(FABB,false,true) // Enable the sensor on startup. Override with M412 followed by M500.
+  #if ANY(MachineCR10Orig, MachineCR20, MachineEnder3, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineCRX, Melzi_To_SBoardUpgrade)
+    #define FIL_RUNOUT_ENABLED_DEFAULT false //these stock machine have no sensor 
+  #else 
+    #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
+  #endif 
   #if ENABLED(DualFilSensors)
     #if DISABLED(SKR13, SKR14, SKR14Turbo, SKRPRO11, SKRE3Turbo)
       #define NUM_RUNOUT_SENSORS   2     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
@@ -2719,10 +2729,10 @@
   // a feed tube. Requires 4 bytes SRAM per sensor, plus 4 bytes overhead.
   #if ENABLED(FilamentEncoder)
     #define FILAMENT_RUNOUT_DISTANCE_MM 12
-  #elif ANY(MachineEnder5Plus, MachineCR5Pro MachineCR10SPro, MachineCR10SProV2)
-    #define FILAMENT_RUNOUT_DISTANCE_MM 10
+  #elif ANY(MachineEnder5Plus, MachineCR5Pro, MachineCR10SPro, MachineCR10SProV2)
+    #define FILAMENT_RUNOUT_DISTANCE_MM 2
   #else
-    #define FILAMENT_RUNOUT_DISTANCE_MM 5
+    #define FILAMENT_RUNOUT_DISTANCE_MM 4
   #endif
 
   #ifdef FILAMENT_RUNOUT_DISTANCE_MM
@@ -2961,16 +2971,14 @@
 #if ENABLED(LEVEL_BED_CORNERS)
   #if EITHER(Creality422, Creality427) && BOTH(RET6_12864_LCD, ABL_BLTOUCH)
     #define LEVEL_CORNERS_USE_PROBE
-    #define LEVEL_CORNERS_INSET_LFRB { 22, 22, 22+40, 22+10 } // (mm) Left, Front, Right, Back insets //include approcimated probe offset
+    #define LEVEL_CORNERS_INSET_LFRB { TERN(MachineEnder3MAX,22+55,22), 22, TERN(MachineEnder3MAX,22,22+45), 22+10 } // (mm) Left, Front, Right, Back insets //include approcimated probe offset
   #else
     #define LEVEL_CORNERS_INSET_LFRB { 22, 22, 22, 22 } // (mm) Left, Front, Right, Back insets
   #endif
 
-
   #define LEVEL_CORNERS_HEIGHT      0.0   // (mm) Z height of nozzle at leveling points
   #define LEVEL_CORNERS_Z_HOP       4.0   // (mm) Z height of nozzle between leveling points
   //#define LEVEL_CENTER_TOO              // Move to the center after the last corner
-
 
   #if ENABLED(LEVEL_CORNERS_USE_PROBE)
     #define LEVEL_CORNERS_PROBE_TOLERANCE 0.1
@@ -3162,6 +3170,18 @@
 #define PREHEAT_2_TEMP_BED    100
 #define PREHEAT_2_TEMP_CHAMBER 35
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
+
+#define PREHEAT_3_LABEL       "PETG"
+#define PREHEAT_3_TEMP_HOTEND 230
+#define PREHEAT_3_TEMP_BED     75
+#define PREHEAT_3_TEMP_CHAMBER 35
+#define PREHEAT_3_FAN_SPEED   255 // Value from 0 to 255
+
+#define PREHEAT_4_LABEL       "PC/PA6"
+#define PREHEAT_4_TEMP_HOTEND 260
+#define PREHEAT_4_TEMP_BED    100
+#define PREHEAT_4_TEMP_CHAMBER 35
+#define PREHEAT_4_FAN_SPEED     0 // Value from 0 to 255
 
 /**
  * Nozzle Park
@@ -3953,13 +3973,18 @@
 // Third-party or vendor-customized controller interfaces.
 // Sources should be installed in 'src/lcd/extui'.
 //
-#if ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR5Pro, MachineCR10Max, MachineEnder6) && (NONE(GraphicLCD, SKRMiniE3V2) || ENABLED(FORCE10SPRODISPLAY))
-  #ifndef FORCE10SPRODISPLAY
-    #define FORCE10SPRODISPLAY
-  #endif
-  #define EXTENSIBLE_UI
-#endif
+//#if ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR5Pro, MachineCR10Max, MachineEnder6) && (NONE(GraphicLCD, SKRMiniE3V2) || ENABLED(FORCE10SPRODISPLAY))
+//  #ifndef FORCE10SPRODISPLAY
+//    #define FORCE10SPRODISPLAY
+//  #endif
+//  #define EXTENSIBLE_UI
+//#endif
 
+#ifdef FORCE10SPRODISPLAY
+  #ifndef EXTENSIBLE_UI
+    #define EXTENSIBLE_UI //make sure extensible ui is enabled
+  #endif
+#endif
 #if ENABLED(EXTENSIBLE_UI)
   //#define EXTUI_LOCAL_BEEPER // Enables use of local Beeper pin with external display
 #endif
