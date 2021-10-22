@@ -528,7 +528,7 @@
   
   #define CrealitySilentBoard
   
-  #if ANY(MachineEnder3Max, MachineEnder6, MachineCR200B)
+  #if ANY(MachineEnder3Max, MachineEnder6)
     #define lerdgeFilSensor
   #endif
 #endif
@@ -1283,9 +1283,9 @@
        #define DEFAULT_Ki   0.81
         #define DEFAULT_Kd 63.12
       #elif ENABLED(MachineCR200B)
-        #define DEFAULT_Kp  13.30 //200c
-        #define DEFAULT_Ki   0.72
-        #define DEFAULT_Kd 61.31        
+        #define DEFAULT_Kp  12.42 //220c
+        #define DEFAULT_Ki  0.66
+        #define DEFAULT_Kd  58.26        
       #else
         #define  DEFAULT_Kp 17.42
         #define  DEFAULT_Ki 1.27
@@ -1364,9 +1364,9 @@
     #define  DEFAULT_bedKi TERN(FABB,5.09,8.78)//60C
     #define  DEFAULT_bedKd TERN(FABB,754.14,956.82)//60C   
   #elif ENABLED(MachineCR200B)
-    #define  DEFAULT_bedKp 462.10
-    #define  DEFAULT_bedKi 85.47
-    #define  DEFAULT_bedKd 624.59
+    #define  DEFAULT_bedKp 106.61 //70c
+    #define  DEFAULT_bedKi 19.85
+    #define  DEFAULT_bedKd 381.71
   #else
     #define  DEFAULT_bedKp 690.34
     #define  DEFAULT_bedKi 111.47
@@ -1932,12 +1932,13 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#if NONE(Creality422, Creality427, MachineEnder6, MachineCR5Pro) && DISABLED(Creality42XUseZMin)
+#if NONE(Creality422, Creality427, MachineEnder6, MachineCR5Pro, MachineCR200B) && DISABLED(Creality42XUseZMin)
   #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 #endif
 // Force the use of the probe for Z-axis homing
-#define USE_PROBE_FOR_Z_HOMING
-
+#if DISABLED(MachineCR200B)
+  #define USE_PROBE_FOR_Z_HOMING
+#endif
 /**
  * Z_MIN_PROBE_PIN
  *
@@ -2486,11 +2487,11 @@
     #define Y_MAX_POS 300
     #define ClipClearance 10
   #elif ENABLED(MachineCR200B)
-    #define X_BED_SIZE 240
-    #define Y_BED_SIZE 220
-    #define Z_MAX_POS 250
-    #define X_MAX_POS 240
-    #define Y_MAX_POS 220
+    #define X_BED_SIZE 220
+    #define Y_BED_SIZE 210
+    #define Z_MAX_POS 200
+    #define X_MAX_POS 220
+    #define Y_MAX_POS 210
     #define ClipClearance 5
   #elif ENABLED(MachineCR6)
     #define X_BED_SIZE 235
@@ -2633,7 +2634,9 @@
   #define X_MIN_POS 0
   #define Y_MIN_POS 0
 #endif
-#define Z_MIN_POS 0
+#ifndef Z_MIN_POS
+  #define Z_MIN_POS 0
+#endif
 #ifndef X_MAX_POS
   #define X_MAX_POS X_BED_SIZE
 #endif
