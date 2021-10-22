@@ -119,21 +119,25 @@ void LevelingModeHandler(DGUS_VP_Variable &var, unsigned short buttonValue) {
 
             if (buttonValue == 1) {
                 // TODO: set state for "view leveling mesh"
+                #if HAS_BED_PROBE
                 ScreenHandler.SetViewMeshLevelState();
                 ScreenHandler.InitMeshValues();
 
                 ScreenHandler.GotoScreen(DGUSLCD_SCREEN_LEVELING);
-            }
+                #endif
+            }   
             break;
 
         case VP_BUTTON_MAINENTERKEY:
             // Go to leveling screen
+            #if HAS_BED_PROBE
             ExtUI::injectCommands_P("G28 U0\nG29 U0");
 
             ScreenHandler.ResetMeshValues();
 
             dgusdisplay.WriteVariable(VP_MESH_SCREEN_MESSAGE_ICON, static_cast<uint16_t>(MESH_SCREEN_MESSAGE_ICON_LEVELING));
             ScreenHandler.GotoScreen(DGUSLCD_SCREEN_LEVELING);
+            #endif
             break;
     }
 }

@@ -2348,7 +2348,7 @@
  *
  * Note that M207 / M208 / M209 settings are saved to EEPROM.
  */
- #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11, MachineEnder3V2, Creality422, Creality427, MachineCR6, MachineCR6Max, MachineEnder6)
+ #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11, MachineEnder3V2, Creality422, Creality427, MachineCR6, MachineCR6Max, MachineEnder6, DGUS_LCD_UI_CREALITY_TOUCH)
   #define FWRETRACT
 #endif
 #if ENABLED(FABB)

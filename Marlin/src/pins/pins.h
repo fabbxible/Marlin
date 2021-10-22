@@ -559,6 +559,8 @@
   #include "stm32f1/pins_BEAST.h"               // STM32F103VE?                           env:STM32F103VE env:STM32F103RE_maple
 #elif MB(MINGDA_MPX_ARM_MINI)
   #include "stm32f1/pins_MINGDA_MPX_ARM_MINI.h" // STM32F1                                env:mingda_mpx_arm_mini
+#elif MB(CREALITY_V425)
+  #include "stm32f1/pins_CREALITY_V425.h"       // STM32F1                                env:STM32F103RET6_creality env:STM32F103RET6_creality_maple
 
 //
 // ARM Cortex-M4F

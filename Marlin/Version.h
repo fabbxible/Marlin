@@ -73,6 +73,8 @@
   #define VerChar1 "5"
 #elif ENABLED(MachineCR2020)
   #define VerChar1 "20"
+#elif ENABLED(MachineCR200B)
+  #define VerChar1 "CR200B"
 #endif
 
 #if(ENABLED(HotendStock))
@@ -170,6 +172,8 @@
   #define CUSTOM_MACHINE_NAME "500 SuPeR"
 #elif ENABLED(MachineCR2020)
   #define CUSTOM_MACHINE_NAME "Fabbxible 2020"
+#elif ENABLED(MachineCR200B)
+  #define CUSTOM_MACHINE_NAME "Fabbxible CR200B"
 #endif
 
 /**

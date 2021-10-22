@@ -70,9 +70,15 @@
 //
 // Limit Switches
 //
-#define X_STOP_PIN                          PA5
-#define Y_STOP_PIN                          PA6
-#define Z_STOP_PIN                          PA7
+#ifndef X_STOP_PIN
+  #define X_STOP_PIN                          PA5
+#endif
+#ifndef Y_STOP_PIN
+  #define Y_STOP_PIN                          PA6
+#endif
+#ifndef Z_STOP_PIN
+  #define Z_STOP_PIN                          PA7
+#endif
 
 #ifndef Z_MIN_PROBE_PIN
   #define Z_MIN_PROBE_PIN                   PB1   // BLTouch IN
@@ -134,8 +140,12 @@
 //
 // Heaters / Fans
 //
-#define HEATER_0_PIN                        PA1   // HEATER1
-#define HEATER_BED_PIN                      PA2   // HOT BED
+#ifndef HEATER_0_PIN
+  #define HEATER_0_PIN                        PA1   // HEATER1
+#endif
+#ifndef HEATER_BED_PIN
+  #define HEATER_BED_PIN                      PA2   // HOT BED
+#endif
 
 #ifndef FAN_PIN
   #define FAN_PIN                           PA0   // FAN
@@ -147,12 +157,16 @@
 //
 // SD Card
 //
-#define SD_DETECT_PIN                       PC7
+#ifndef SD_DETECT_PIN
+  #define SD_DETECT_PIN                       PC7
+#endif
 #define SDCARD_CONNECTION                ONBOARD
 #define ONBOARD_SPI_DEVICE                     1
-#define ONBOARD_SD_CS_PIN                   PA4   // SDSS
+#ifndef ONBOARD_SD_CS_PIN
+  #define ONBOARD_SD_CS_PIN                   PA4   // SDSS
+#endif
 #define SDIO_SUPPORT
-#define NO_SD_HOST_DRIVE                          // This board's SD is only seen by the printer
+//#define NO_SD_HOST_DRIVE                          // This board's SD is only seen by the printer
 
 #if ENABLED(CR10_STOCKDISPLAY) && NONE(RET6_12864_LCD, VET6_12864_LCD)
   #error "Define RET6_12864_LCD or VET6_12864_LCD to select pins for CR10_STOCKDISPLAY with the Creality V4 controller."

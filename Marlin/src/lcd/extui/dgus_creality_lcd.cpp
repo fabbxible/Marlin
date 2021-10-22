@@ -191,8 +191,8 @@ bool hasPrintTimer = false;
     // Called after the entire EEPROM has been read,
     // whether successful or not.
   }
-
-  #if HAS_MESH
+  
+  #if HAS_MESH && HAS_BED_PROBE
     void onMeshLevelingStart() {
       ScreenHandler.OnMeshLevelingStart();
     }

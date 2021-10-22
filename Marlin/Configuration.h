@@ -518,12 +518,18 @@
   #endif
 #endif
 
-#if ANY(MachineEnder3V2, MachineEnder3Pro422, MachineEnder3Pro427, Creality422, Creality427, MachineEnder3Max, MachineEnder5Pro422, MachineEnder5Pro427, MachineEnder6)
+#if ANY(MachineEnder3V2, MachineEnder3Pro422, MachineEnder3Pro427, Creality422, Creality427, MachineEnder3Max, MachineEnder5Pro422, MachineEnder5Pro427, MachineEnder6, MachineCR200B)
   #define POWER_LOSS_RECOVERY //Screen will not compile without PLR
+  
   #if NONE(BedAC, BedDC)
     #define BedDC
   #endif
+  
   #define CrealitySilentBoard
+  
+  #if ANY(MachineEnder3Max, MachineEnder6, MachineCR200B)
+    #define lerdgeFilSensor
+  #endif
 #endif
 
 #if ANY(MachineEnder3Pro422, MachineEnder3Pro427)
@@ -552,10 +558,6 @@
   #endif
 #endif
 
-#if ANY(MachineEnder3Max, MachineEnder6)
-  #define lerdgeFilSensor
-#endif
-
 #if EITHER(Creality422, Creality427) && DISABLED(MachineEnder3V2)
   #ifndef DWIN_T5L
     #define RET6_12864_LCD
@@ -566,7 +568,7 @@
   #define HotendStock
 #endif
 
-#if NONE(ABL_UBL, ABL_BI, FORCE10SPRODISPLAY)
+#if NONE(ABL_UBL, ABL_BI, FORCE10SPRODISPLAY, DWIN_T5L)
   #define ABL_BI
 #endif
 
@@ -617,11 +619,11 @@
   #define POWER_LOSS_RECOVERY
 #endif
 
-#if NONE(MachineCR10Orig, MachineEnder4, MachineCR10SPro, MachineCRX, MachineCR10Max, MachineEnder5Plus, SKRMiniE3V2, FORCE10SPRODISPLAY) || ANY(GraphicLCD, DWIN_T5L)
+#if NONE(MachineCR10Orig, MachineEnder4, MachineCR10SPro, MachineCRX, MachineCR10Max, MachineEnder5Plus, MachineEnder6, MachineCR20B, SKRMiniE3V2, FORCE10SPRODISPLAY) || ANY(GraphicLCD, DWIN_T5L)
   #define SHOW_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
-  #if DISABLED(MachineEnder3V2, MachineCR6, MachineCR6Max, DWIN_T5L)
+  #if NONE(MachineEnder3V2, MachineCR6, MachineCR6Max, MachineCR200B)
     #define SHOW_CUSTOM_BOOTSCREEN
     // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
     #define CUSTOM_STATUS_SCREEN_IMAGE
@@ -638,7 +640,7 @@
  */
 #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11, SKRMiniE3V2, SKRE3Turbo, SKR_CR6)
   #define SERIAL_PORT -1
- #elif ANY(MachineEnder3V2, MachineEnder3Max, MachineEnder3Pro422, MachineEnder3Pro427, MachineEnder5Pro422, MachineEnder5Pro427, Creality422, Creality427, MachineEnder6, MachineCR6, MachineCR6Max)
+ #elif ANY(MachineEnder3V2, MachineEnder3Max, MachineEnder3Pro422, MachineEnder3Pro427, MachineEnder5Pro422, MachineEnder5Pro427, Creality422, Creality427, MachineEnder6, MachineCR6, MachineCR6Max, MachineCR200B)
   #define SERIAL_PORT 1
 #else
   #define SERIAL_PORT 0
@@ -665,7 +667,7 @@
   #define LCD_SERIAL_PORT 2
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 0
-#elif ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder6) && DISABLED(GraphicLCD)
+#elif ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder6, MachineCR200B) && DISABLED(GraphicLCD)
   #define LCD_SERIAL_PORT 3
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 1
@@ -739,6 +741,8 @@
     #define MOTHERBOARD BOARD_CREALITY_V452
   #elif ANY(MachineCR6, MachineCR6Max)
     #define MOTHERBOARD BOARD_CREALITY_V453
+  #elif ENABLED(MachineCR200B)
+    #define MOTHERBOARD BOARD_CREALITY_V425
   #else
     #define MOTHERBOARD BOARD_RAMPS_CREALITY
   #endif
@@ -1277,6 +1281,10 @@
        #define DEFAULT_Kp  14.32
        #define DEFAULT_Ki   0.81
         #define DEFAULT_Kd 63.12
+      #elif ENABLED(MachineCR200B)
+       #define DEFAULT_Kp  14.32
+       #define DEFAULT_Ki   0.81
+        #define DEFAULT_Kd 63.12        
       #else
         #define  DEFAULT_Kp 17.42
         #define  DEFAULT_Ki 1.27
@@ -1354,6 +1362,10 @@
     #define  DEFAULT_bedKp TERN(FABB,75.87,112.27)//60C
     #define  DEFAULT_bedKi TERN(FABB,5.09,8.78)//60C
     #define  DEFAULT_bedKd TERN(FABB,754.14,956.82)//60C   
+  #elif ENABLED(MachineCR200B)
+    #define  DEFAULT_bedKp 462.10
+    #define  DEFAULT_bedKi 85.47
+    #define  DEFAULT_bedKd 624.59
   #else
     #define  DEFAULT_bedKp 690.34
     #define  DEFAULT_bedKi 111.47
@@ -1453,8 +1465,8 @@
 
 #define THERMAL_PROTECTION_HOTENDS // Enable thermal protection for all extruders
 #define THERMAL_PROTECTION_BED     // Enable thermal protection for the heated bed
-#define THERMAL_PROTECTION_CHAMBER // Enable thermal protection for the heated chamber
-#define THERMAL_PROTECTION_COOLER  // Enable thermal protection for the laser cooling
+//#define THERMAL_PROTECTION_CHAMBER // Enable thermal protection for the heated chamber
+//#define THERMAL_PROTECTION_COOLER  // Enable thermal protection for the laser cooling
 
 //===========================================================================
 //============================= Mechanical Settings =========================
@@ -1689,7 +1701,7 @@
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
-#if ANY(Creality422, Creality427, MachineEnder6, MachineCR6, MachineCR6MAX) && NONE(SKRE3Turbo, SKR14Turbo, SKR14, SKR13)
+#if ANY(Creality422, Creality427, MachineEnder6, MachineCR6, MachineCR6MAX, MachineCR200B) && NONE(SKRE3Turbo, SKR14Turbo, SKR14, SKR13)
   #define ENDSTOP_INTERRUPTS_FEATURE
 #endif
 
@@ -1748,7 +1760,7 @@
   #define EStepsmm 415
 #elif ENABLED(E3DHemera)
   #define EStepsmm 409
-#elif ANY(EZRstruder, MachineCR10SV2)
+#elif ANY(EZRstruder, MachineCR10SV2, MachineCR200B)
   #define EStepsmm 93
 #elif ANY(MachineCR10SPro, MachineCR10Max, MachineCRXPro, MachineEnder6, MachineCR5Pro)
   #define EStepsmm 140 //dual drive
@@ -1817,6 +1829,12 @@
   #define DEFAULT_MAX_FEEDRATE          { 200, 200, 10, 50 }
   #define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 4000 }
   #define DEFAULT_ACCELERATION          2000    // X, Y, Z and E acceleration for printing moves
+  #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
+  #define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves    
+#elif ENABLED(MachineCR200B)
+  #define DEFAULT_MAX_FEEDRATE          { 200, 200, 10, 50 }
+  #define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 4000 }
+  #define DEFAULT_ACCELERATION          1500    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves    
 #endif
@@ -2337,6 +2355,11 @@
   #define INVERT_Z_DIR true
   #define INVERT_E0_DIR true
   #define INVERT_E1_DIR false
+#elif ENABLED(MachineCR200B)
+  #define INVERT_X_DIR true
+  #define INVERT_Y_DIR true
+  #define INVERT_Z_DIR true
+  #define INVERT_E0_DIR true
 #elif ENABLED(MachineCR5Pro)
   #define INVERT_X_DIR true
   #define INVERT_Y_DIR true
@@ -2459,6 +2482,13 @@
     #define X_MAX_POS 300
     #define Y_MAX_POS 300
     #define ClipClearance 10
+  #elif ENABLED(MachineCR200B)
+    #define X_BED_SIZE 240
+    #define Y_BED_SIZE 220
+    #define Z_MAX_POS 250
+    #define X_MAX_POS 240
+    #define Y_MAX_POS 220
+    #define ClipClearance 5
   #elif ENABLED(MachineCR6)
     #define X_BED_SIZE 235
     #define Y_BED_SIZE 235
@@ -2791,7 +2821,7 @@
 //#define AUTO_BED_LEVELING_LINEAR
   #if ENABLED(ABL_UBL)
     #define AUTO_BED_LEVELING_UBL
-  #elif BOTH(PROBE_MANUALLY, FORCE10SPRODISPLAY)
+  #elif ENABLED(PROBE_MANUALLY) && EITHER(FORCE10SPRODISPLAY, DWIN_T5L)
     #define MESH_BED_LEVELING
   #elif !BOTH(OrigLA, MachineCR10Orig)
     #define AUTO_BED_LEVELING_BILINEAR
@@ -3937,7 +3967,7 @@
 //
 // CR-6 OEM touch screen. A DWIN display with touch.
 //
-#if ANY(MachineCR6, MachineCR6Max) || ENABLED(DWIN_T5L)
+#if ANY(MachineCR6, MachineCR6Max, MachineCR200B) || ENABLED(DWIN_T5L)
   #define DGUS_LCD_UI_CREALITY_TOUCH
 #endif
 

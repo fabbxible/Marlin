@@ -758,6 +758,7 @@ void DGUSScreenHandler::ScreenConfirmedOK(DGUS_VP_Variable &var, void *val_ptr) 
   if (ramcopy.set_by_display_handler) ramcopy.set_by_display_handler(ramcopy, val_ptr);
 }
 
+#if HAS_BED_PROBE
 void DGUSScreenHandler::HandleZoffsetChange(DGUS_VP_Variable &var, void *val_ptr) {
   HandleLiveAdjustZ(var, val_ptr);
 }
@@ -850,74 +851,6 @@ void DGUSScreenHandler::ResetMeshValues() {
   dgusdisplay.WriteVariable(VP_MESH_LEVEL_STATUS, static_cast<uint16_t>(DGUS_GRID_VISUALIZATION_START_ID));
 }
 
-uint16_t CreateRgb(double h, double s, double v) {
-    struct {
-      double h;       // angle in degrees
-      double s;       // a fraction between 0 and 1
-      double v;       // a fraction between 0 and 1
-    } in = { h, s, v};
-
-    double      hh, p, q, t, ff;
-    long        i;
-    struct {
-      double r;       // a fraction between 0 and 1
-      double g;       // a fraction between 0 and 1
-      double b;       // a fraction between 0 and 1
-      } out;
-
-    if(in.s <= 0.0) {       // < is bogus, just shuts up warnings
-        out.r = in.v;
-        out.g = in.v;
-        out.b = in.v;
-        return 0;
-    }
-
-    hh = in.h;
-    if(hh >= 360.0) hh = 0.0;
-    hh /= 60.0;
-    i = (long)hh;
-    ff = hh - i;
-    p = in.v * (1.0 - in.s);
-    q = in.v * (1.0 - (in.s * ff));
-    t = in.v * (1.0 - (in.s * (1.0 - ff)));
-
-    switch(i) {
-    case 0:
-        out.r = in.v;
-        out.g = t;
-        out.b = p;
-        break;
-    case 1:
-        out.r = q;
-        out.g = in.v;
-        out.b = p;
-        break;
-    case 2:
-        out.r = p;
-        out.g = in.v;
-        out.b = t;
-        break;
-
-    case 3:
-        out.r = p;
-        out.g = q;
-        out.b = in.v;
-        break;
-    case 4:
-        out.r = t;
-        out.g = p;
-        out.b = in.v;
-        break;
-    case 5:
-    default:
-        out.r = in.v;
-        out.g = p;
-        out.b = q;
-        break;
-    }
-
-  return (((static_cast<uint8_t>(out.r * 255) & 0xf8)<<8) + ((static_cast<uint8_t>(out.g * 255) & 0xfc)<<3) + (static_cast<uint8_t>(out.b * 255)>>3));
-}
 
 
 void DGUSScreenHandler::UpdateMeshValue(const int8_t x, const int8_t y, const float z) {
@@ -1009,6 +942,76 @@ void DGUSScreenHandler::HandleMeshPoint(DGUS_VP_Variable &var, void *val_ptr) {
   ExtUI::setMeshPoint({ x, y }, z);
 
   RequestSaveSettings();
+}
+#endif
+
+uint16_t CreateRgb(double h, double s, double v) {
+    struct {
+      double h;       // angle in degrees
+      double s;       // a fraction between 0 and 1
+      double v;       // a fraction between 0 and 1
+    } in = { h, s, v};
+
+    double      hh, p, q, t, ff;
+    long        i;
+    struct {
+      double r;       // a fraction between 0 and 1
+      double g;       // a fraction between 0 and 1
+      double b;       // a fraction between 0 and 1
+      } out;
+
+    if(in.s <= 0.0) {       // < is bogus, just shuts up warnings
+        out.r = in.v;
+        out.g = in.v;
+        out.b = in.v;
+        return 0;
+    }
+
+    hh = in.h;
+    if(hh >= 360.0) hh = 0.0;
+    hh /= 60.0;
+    i = (long)hh;
+    ff = hh - i;
+    p = in.v * (1.0 - in.s);
+    q = in.v * (1.0 - (in.s * ff));
+    t = in.v * (1.0 - (in.s * (1.0 - ff)));
+
+    switch(i) {
+    case 0:
+        out.r = in.v;
+        out.g = t;
+        out.b = p;
+        break;
+    case 1:
+        out.r = q;
+        out.g = in.v;
+        out.b = p;
+        break;
+    case 2:
+        out.r = p;
+        out.g = in.v;
+        out.b = t;
+        break;
+
+    case 3:
+        out.r = p;
+        out.g = q;
+        out.b = in.v;
+        break;
+    case 4:
+        out.r = t;
+        out.g = p;
+        out.b = in.v;
+        break;
+    case 5:
+    default:
+        out.r = in.v;
+        out.g = p;
+        out.b = q;
+        break;
+    }
+
+  return (((static_cast<uint8_t>(out.r * 255) & 0xf8)<<8) + ((static_cast<uint8_t>(out.g * 255) & 0xfc)<<3) + (static_cast<uint8_t>(out.b * 255)>>3));
 }
 
 #if HAS_COLOR_LEDS
@@ -1719,8 +1722,10 @@ bool DGUSScreenHandler::loop() {
       SetTouchScreenConfiguration();
 
       // Set initial leveling status
+      #if HAS_BED_PROBE
       InitMeshValues();
-
+      #endif
+      
       // No disabled back button
       ScreenHandler.SetSynchronousOperationFinish();
 
