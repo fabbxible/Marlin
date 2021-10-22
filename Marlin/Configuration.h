@@ -183,7 +183,8 @@
 //#define CrealitySilentBoard // Creality board with TMC2208 Standalone drivers. Disables Linear Advance
 //#define Creality422
 //#define Creality427
-//define CR6_452 // Older recalled Creality 452 motherboard
+//#define CR6_452 // Older recalled Creality 452 motherboard
+//#define Creality425 //cr200b
 
 //#define SKR13 // 32 bit board - assumes 2208 drivers
 //#define SKR14
@@ -366,7 +367,7 @@
   #define E3DTitan
 #endif
 
-#if ANY(MachineCR6, MachineCR6Max)
+#if ANY(MachineCR6, MachineCR6Max, MachineCR200B)
   #if NONE(ABL_UBL, ABL_BI)
     #define ABL_BI
   #endif
@@ -1282,9 +1283,9 @@
        #define DEFAULT_Ki   0.81
         #define DEFAULT_Kd 63.12
       #elif ENABLED(MachineCR200B)
-       #define DEFAULT_Kp  14.32
-       #define DEFAULT_Ki   0.81
-        #define DEFAULT_Kd 63.12        
+        #define DEFAULT_Kp  13.30 //200c
+        #define DEFAULT_Ki   0.72
+        #define DEFAULT_Kd 61.31        
       #else
         #define  DEFAULT_Kp 17.42
         #define  DEFAULT_Ki 1.27
@@ -1608,7 +1609,7 @@
  * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'L6470', 'L6474', 'POWERSTEP01', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
 
-#if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11, MachineCR10SV2, CrealitySilentBoard, MachineCR10SPro, MachineCR10SProV2, MachineCR10Max, SKRMiniE3V2, MachineCR6, MachineCR6Max) && DISABLED(SKR_UART)
+#if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11, MachineCR10SV2, CrealitySilentBoard, MachineCR10SPro, MachineCR10SProV2, MachineCR10Max, SKRMiniE3V2, MachineCR6, MachineCR6Max, MachineCR200B) && DISABLED(SKR_UART)
   #if ENABLED(SKR_2209)
     #define X_DRIVER_TYPE  TMC2209_STANDALONE
     #define Y_DRIVER_TYPE  TMC2209_STANDALONE
@@ -1913,7 +1914,7 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-#if NONE(MachineCR10Orig, SKRMiniE3V2, MachineCR6, MachineCR6Max) || ENABLED(MelziHostOnly)
+#if NONE(MachineCR10Orig, SKRMiniE3V2, MachineCR6, MachineCR6Max, MachineCR200B) || ENABLED(MelziHostOnly)
   #define S_CURVE_ACCELERATION
 #endif
 
@@ -1966,7 +1967,7 @@
  * Use G29 repeatedly, adjusting the Z height at each point with movement commands
  * or (with LCD_BED_LEVELING) the LCD controller.
  */
-#if NONE(ABL_EZABL, ABL_NCSW, ABL_BLTOUCH, ABL_TOUCH_MI, MachineCR6, MachineCR6Max)
+#if NONE(ABL_EZABL, ABL_NCSW, ABL_BLTOUCH, ABL_TOUCH_MI, MachineCR6, MachineCR6Max, MachineCR200B)
   #define PROBE_MANUALLY
   #define MANUAL_PROBE_START_Z 0.0
 #endif
@@ -2125,6 +2126,8 @@
   #define NOZZLE_TO_PROBE_OFFSET { 40, 3, 0 }
 #elif ENABLED(MachineEnder3Max)
   #define NOZZLE_TO_PROBE_OFFSET { 55, -8, 0 }
+#elif ENABLED(MachineCR200B)
+  #define NOZZLE_TO_PROBE_OFFSET { 0, 15, -1 }
 #elif ANY(MachineCR6, MachineCR6Max)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, 0.2 }
 #elif ALL(MachineCRX, HotendStock)
@@ -2269,7 +2272,7 @@
 #define Z_PROBE_OFFSET_RANGE_MAX 2
 
 // Enable the M48 repeatability test to test probe accuracy
-#if ANY(ABL_EZABL, ABL_BLTOUCH, ABL_NCSW, ABL_TOUCH_MI, MachineCR6, MachineCR6Max) && NONE(MachineCR10Orig, SKRMiniE3V2, SKRE3Turbo)
+#if ANY(ABL_EZABL, ABL_BLTOUCH, ABL_NCSW, ABL_TOUCH_MI, MachineCR6, MachineCR6Max, MachineCR200B) && NONE(MachineCR10Orig, SKRMiniE3V2, SKRE3Turbo)
   #define Z_MIN_PROBE_REPEATABILITY_TEST
 #endif
 
@@ -2286,7 +2289,7 @@
  * These options are most useful for the BLTouch probe, but may also improve
  * readings with inductive probes and piezo sensors.
  */
-#if (ANY(ABL_EZABL, ABL_NCSW, MachineCR6, MachineCR6Max)) && DISABLED(MachineCR10Orig)
+#if (ANY(ABL_EZABL, ABL_NCSW, MachineCR6, MachineCR6Max, NachineCR200B)) && DISABLED(MachineCR10Orig)
   #define PROBING_HEATERS_OFF       // Turn heaters off when probing
 #endif
 #if ENABLED(PROBING_HEATERS_OFF)
@@ -2357,9 +2360,9 @@
   #define INVERT_E1_DIR false
 #elif ENABLED(MachineCR200B)
   #define INVERT_X_DIR true
-  #define INVERT_Y_DIR true
-  #define INVERT_Z_DIR true
-  #define INVERT_E0_DIR true
+  #define INVERT_Y_DIR false
+  #define INVERT_Z_DIR false
+  #define INVERT_E0_DIR false
 #elif ENABLED(MachineCR5Pro)
   #define INVERT_X_DIR true
   #define INVERT_Y_DIR true
@@ -2848,7 +2851,7 @@
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of PROGMEM!
  */
-#if ANY(MachineCR6, MachineCR6Max, MachineEnder6, Creality422, Creality427, SKR13, SKR14, SKR14Turbo, SKRE3Turbo, SKRPRO11)
+#if ANY(MachineCR6, MachineCR6Max, MachineCR20B, MachineEnder6, Creality422, Creality427, SKR13, SKR14, SKR14Turbo, SKRE3Turbo, SKRPRO11)
   #define DEBUG_LEVELING_FEATURE
 #endif
 
@@ -2986,7 +2989,7 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-#if NONE(ABL_EZABL, ABL_NCSW, ABL_BLTOUCH, ABL_TOUCH_MI, SKRMiniE3V2, MachineEnder3V2, FORCE10SPRODISPLAY, DWIN_T5L, MachineCR6, MachineCR6Max) && (DISABLED(MachineCRX) || ENABLED(GraphicLCD))
+#if NONE(ABL_EZABL, ABL_NCSW, ABL_BLTOUCH, ABL_TOUCH_MI, SKRMiniE3V2, MachineEnder3V2, FORCE10SPRODISPLAY, DWIN_T5L, MachineCR6, MachineCR6Max, MachineCR200B) && (DISABLED(MachineCRX) || ENABLED(GraphicLCD))
   #define LCD_BED_LEVELING
 #endif
 
@@ -3675,7 +3678,7 @@
   #define DWIN_CREALITY_LCD
 #elif ANY(OrigLCD, MachineCR10Orig, MachineEnder3Pro422, MachineEnder3Pro427, MachineEnder3Max, MachineEnder5Pro422, MachineEnder5Pro427, SKRMiniE3V2, SKRE3Turbo) && NONE(GraphicLCD, DWIN_T5L)
   #define CR10_STOCKDISPLAY
-#elif NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, OrigLCD, MachineCR10Orig, SKRMiniE3V2, FORCE10SPRODISPLAY, DWIN_T5L, MachineCR6, MachineCR6Max) || ENABLED(GraphicLCD)
+#elif NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, OrigLCD, MachineCR10Orig, SKRMiniE3V2, FORCE10SPRODISPLAY, DWIN_T5L, MachineCR6, MachineCR6Max, MachineCR200B) || ENABLED(GraphicLCD)
   #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 #endif
 //

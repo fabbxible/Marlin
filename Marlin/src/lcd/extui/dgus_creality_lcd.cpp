@@ -192,7 +192,7 @@ bool hasPrintTimer = false;
     // whether successful or not.
   }
   
-  #if HAS_MESH && HAS_BED_PROBE
+  #if HAS_MESH || HAS_BED_PROBE
     void onMeshLevelingStart() {
       ScreenHandler.OnMeshLevelingStart();
     }

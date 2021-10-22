@@ -69,8 +69,8 @@
 //
 // SD Card
 //
-#define SD_DETECT_PIN     PC7
-#define ONBOARD_SD_CS_PIN PC9
+//#define SD_DETECT_PIN     PC7
+//#define ONBOARD_SD_CS_PIN PC9
 
 //
 // Misc. Functions
