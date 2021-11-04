@@ -137,6 +137,7 @@
 // Touchscreen options - only 32 bit boards have the open serial ports to use with graphics displays above
 //#define FORCE10SPRODISPLAY //DWIN_T5 //e5+, e6, cr5pro, cr10max, cr10spro
 //#define DWIN_T5L //cr200b, cr10smart, ender7, cr6se, cr6max
+//#define TSHorizontal
 
 //#define AddonFilSensor //Adds a filament runout sensor to the CR20 or Ender 4
 //#define lerdgeFilSensor //Using lerdge filament sensor, which is opposite polarity to stock
@@ -430,7 +431,8 @@
   #endif
     #define X_STOP_PIN 3
     #define Y_STOP_PIN 14
-    #define Z_STOP_PIN 18
+    //#define Z_STOP_PIN 18
+    #define Z_MIN_PROBE_PIN 19
   #define lerdgeFilSensor
   #if DISABLED(ABL_UBL)
     #define ABL_BI
@@ -529,7 +531,7 @@
   #define CrealitySilentBoard
   
   #if ANY(MachineEnder3Max, MachineEnder6)
-    #define lerdgeFilSensor
+    #define lerdgeFilSensor // Switch type sensor
   #endif
 #endif
 
@@ -624,7 +626,7 @@
   #define SHOW_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
-  #if NONE(MachineEnder3V2, MachineCR6, MachineCR6Max, MachineCR200B)
+  #if NONE(MachineEnder3V2, MachineCR6, MachineCR6Max, MachineCR200B, DWIN_T5L)
     #define SHOW_CUSTOM_BOOTSCREEN
     // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
     #define CUSTOM_STATUS_SCREEN_IMAGE
@@ -668,12 +670,12 @@
   #define LCD_SERIAL_PORT 2
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 0
-#elif ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder6, MachineCR200B) && DISABLED(GraphicLCD)
+#elif ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder6, MachineCR200B, DWIN_T5L) && DISABLED(GraphicLCD)
   #define LCD_SERIAL_PORT 3
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 1
 #elif ANY(Creality422, Creality427) && NONE(MachineEnder3V2, DWIN_T5L)
-  #define SERIAL_PORT_2 3
+  //#define SERIAL_PORT_2 3 //dont use rserial port 2
 #endif
 
 /**
@@ -1259,9 +1261,9 @@
         #define  DEFAULT_Ki TERN(FABB,6.01,2.16)//200C  //0.89//Default
         #define  DEFAULT_Kd TERN(FABB,69.42,77.25)//200C  //61.22//Default
       #elif ENABLED(MachineCR5Pro)
-        #define  DEFAULT_Kp 14.72
-        #define  DEFAULT_Ki 0.89
-        #define  DEFAULT_Kd 61.22
+        #define  DEFAULT_Kp 11.8 //240C
+        #define  DEFAULT_Ki 0.8
+        #define  DEFAULT_Kd 41.3
       #elif ENABLED(MachineCRX)
         #define DEFAULT_Kp 19.00
         #define DEFAULT_Ki 1.40
@@ -1283,9 +1285,9 @@
        #define DEFAULT_Ki   0.81
         #define DEFAULT_Kd 63.12
       #elif ENABLED(MachineCR200B)
-        #define DEFAULT_Kp  12.42 //220c
-        #define DEFAULT_Ki  0.66
-        #define DEFAULT_Kd  58.26        
+        #define DEFAULT_Kp  11.95 //230c
+        #define DEFAULT_Ki  0.63
+        #define DEFAULT_Kd  56.98        
       #else
         #define  DEFAULT_Kp 17.42
         #define  DEFAULT_Ki 1.27
@@ -1364,9 +1366,13 @@
     #define  DEFAULT_bedKi TERN(FABB,5.09,8.78)//60C
     #define  DEFAULT_bedKd TERN(FABB,754.14,956.82)//60C   
   #elif ENABLED(MachineCR200B)
-    #define  DEFAULT_bedKp 106.61 //70c
-    #define  DEFAULT_bedKi 19.85
-    #define  DEFAULT_bedKd 381.71
+    #define  DEFAULT_bedKp 120.04 //100c
+    #define  DEFAULT_bedKi 22.02
+    #define  DEFAULT_bedKd 436.23
+  #elif ENABLED(MachineCR5Pro)
+    #define  DEFAULT_bedKp 86.6 //90c
+    #define  DEFAULT_bedKi 15.1
+    #define  DEFAULT_bedKd 331.3  
   #else
     #define  DEFAULT_bedKp 690.34
     #define  DEFAULT_bedKi 111.47
@@ -1559,12 +1565,12 @@
 //  #define Z_MIN_PROBE_ENDSTOP_INVERTING false //bltouch
 // #endif
 
-#if ANY(MachineEnder4, MachineCR2020, Machine CR5Pro)
+#if ANY(MachineEnder4, MachineCR2020, MachineCR5Pro)
   #define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #else
   #define X_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #endif
-#if ENABLED(MachineCR2020, MachineCR5Pro)
+#if ANY(MachineCR2020, MachineCR5Pro)
   #define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #else
   #define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
@@ -1579,12 +1585,12 @@
 #define J_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define K_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 
-#if NONE(ABL_EZABL, MachineCR2020)
+#if NONE(ABL_EZABL, MachineCR2020, MachineCR5Pro)
   #define Z_MIN_ENDSTOP_INVERTING false  // set to true to invert the logic of the endstop.
   #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
 #else
   #define Z_MIN_ENDSTOP_INVERTING true  // set to true to invert the logic of the endstop.
-  #if ENABLED(BLTOUCH)
+  #if ENABLED(ABL_BLTOUCH)
     #define Z_MIN_PROBE_ENDSTOP_INVERTING false // bltouch
   #else
     #define Z_MIN_PROBE_ENDSTOP_INVERTING true // set to true to invert the logic of the probe.
@@ -1723,7 +1729,7 @@
 #endif
 
 // Check for stuck or disconnected endstops during homing moves.
-#define DETECT_BROKEN_ENDSTOP
+//#define DETECT_BROKEN_ENDSTOP
 
 //=============================================================================
 //============================== Movement Settings ============================
@@ -1936,9 +1942,9 @@
   #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 #endif
 // Force the use of the probe for Z-axis homing
-#if DISABLED(MachineCR200B)
+//#if DISABLED(MachineCR200B)
   #define USE_PROBE_FOR_Z_HOMING
-#endif
+//#endif
 /**
  * Z_MIN_PROBE_PIN
  *
@@ -2128,7 +2134,7 @@
 #elif ENABLED(MachineEnder3Max)
   #define NOZZLE_TO_PROBE_OFFSET { 55, -8, 0 }
 #elif ENABLED(MachineCR200B)
-  #define NOZZLE_TO_PROBE_OFFSET { 0, 15, -1 }
+  #define NOZZLE_TO_PROBE_OFFSET { 23, 31, 0 }
 #elif ANY(MachineCR6, MachineCR6Max)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, 0.2 }
 #elif ALL(MachineCRX, HotendStock)
@@ -2177,7 +2183,7 @@
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
 #if ENABLED(ABL_BLTOUCH)
-  #define PROBING_MARGIN 3
+  #define PROBING_MARGIN 5
 #else
   #define PROBING_MARGIN 10
 #endif
@@ -2433,15 +2439,17 @@
  *  - Use a low value (i.e., Z_MIN_POS) if the nozzle falls down to the bed.
  *  - Use a large value (i.e., Z_MAX_POS) if the bed falls down, away from the nozzle.
  */
-//#define Z_IDLE_HEIGHT Z_HOME_POS
 
-//#define UNKNOWN_Z_NO_RAISE // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
+#if ANY(MachineCR200B, MachineCR5Pro, MachineEnder6, MachineEnder5, MachineEnder5Plus)
+  //#define Z_IDLE_HEIGHT Z_MAX_POS
+  //#define UNKNOWN_Z_NO_RAISE // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
+#endif
 #if ANY(MachineEnder5)
-  #define Z_HOMING_HEIGHT 10
+  #define Z_HOMING_HEIGHT 5
 #elif ENABLED(TOUCH_MI_PROBE)
   #define Z_HOMING_HEIGHT 10
 #else
-  #define Z_HOMING_HEIGHT 10  // (in mm) Minimal z height before homing (G28) for Z clearance above the bed, clamps, ...
+  #define Z_HOMING_HEIGHT 5  // (in mm) Minimal z height before homing (G28) for Z clearance above the bed, clamps, ...
 #endif
 
 #define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
@@ -2487,11 +2495,11 @@
     #define Y_MAX_POS 300
     #define ClipClearance 10
   #elif ENABLED(MachineCR200B)
-    #define X_BED_SIZE 220
-    #define Y_BED_SIZE 210
+    #define X_BED_SIZE 210
+    #define Y_BED_SIZE 200
     #define Z_MAX_POS 200
-    #define X_MAX_POS 220
-    #define Y_MAX_POS 210
+    #define X_MAX_POS 210
+    #define Y_MAX_POS 200
     #define ClipClearance 5
   #elif ENABLED(MachineCR6)
     #define X_BED_SIZE 235
@@ -2534,11 +2542,11 @@
     #define Y_MAX_POS 360
     #define ClipClearance 25
   #elif ENABLED(MachineCR5Pro)
-    #define Y_BED_SIZE 225
+    #define Y_BED_SIZE 220
     #define Z_MAX_POS 380
     #define X_BED_SIZE 300
     #define X_MAX_POS 300
-    #define Y_MAX_POS 225
+    #define Y_MAX_POS 220
     #define ClipClearance 10
   #elif ENABLED(MachineEnder6)
     #define X_BED_SIZE 260
@@ -2630,6 +2638,9 @@
 #elif ENABLED(MachineCR6Max)
   #define X_MIN_POS -10
   #define Y_MIN_POS -3
+#elif ENABLED(MachineCR5Pro)
+  #define X_MIN_POS  0
+  #define Y_MIN_POS -5
 #else
   #define X_MIN_POS 0
   #define Y_MIN_POS 0
@@ -2854,7 +2865,7 @@
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of PROGMEM!
  */
-#if ANY(MachineCR6, MachineCR6Max, MachineCR20B, MachineEnder6, Creality422, Creality427, SKR13, SKR14, SKR14Turbo, SKRE3Turbo, SKRPRO11)
+#if ANY(MachineCR6, MachineCR6Max, MachineCR200B, MachineEnder6, Creality422, Creality427, SKR13, SKR14, SKR14Turbo, SKRE3Turbo, SKRPRO11)
   #define DEBUG_LEVELING_FEATURE
 #endif
 
@@ -3085,7 +3096,7 @@
 #endif
 
 // Homing speeds (mm/min)
-#define HOMING_FEEDRATE_MM_M { (60*60), (60*60), (10*60) }
+#define HOMING_FEEDRATE_MM_M { (60*60), (60*60), (8*60) }
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS

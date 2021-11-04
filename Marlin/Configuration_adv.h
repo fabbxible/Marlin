@@ -827,8 +827,9 @@
 
   // Feature: Switch into SW mode after a deploy. It makes the output pulse longer. Can be useful
   //          in special cases, like noisy or filtered input configurations.
-  //#define BLTOUCH_FORCE_SW_MODE
-
+  #if ENABLED(MachineCR5Pro)
+    #define BLTOUCH_FORCE_SW_MODE
+  #endif
   /**
    * Settings for BLTouch Smart 3.0 and 3.1
    * Summary:
@@ -862,7 +863,7 @@
    * This feature was designed for Deltabots with very fast Z moves; however, higher speed Cartesians
    * might be able to use it. If the machine can't raise Z fast enough the BLTouch may go into ALARM.
    */
-  #if NONE(MachineCR10Orig, LowMemoryBoard, MachineCRX)
+  #if NONE(MachineCR10Orig, LowMemoryBoard, MachineCRX, MachineCR5Pro)
     #define BLTOUCH_HS_MODE
   #endif
 
@@ -998,7 +999,7 @@
 // If the Nozzle or Bed falls when the Z stepper is disabled, set its resting position here.
 //#define Z_AFTER_DEACTIVATE Z_HOME_POS
 
-#if ANY(MachineEnder5, MachineEnder5Plus, MachineEnder6)
+#if ANY(MachineEnder5, MachineEnder5Plus, MachineEnder6, MachineCR5Pro, MachineCR200B)
   #define HOME_AFTER_DEACTIVATE  // Require rehoming after steppers are deactivated
 #endif
 
@@ -1369,7 +1370,7 @@
 
   // The standard SD detect circuit reads LOW when media is inserted and HIGH when empty.
   // Enable this option and set to HIGH if your SD cards are incorrectly detected.
-  #if NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder3V2, SKR14Turbo, SKR14, , Creality422, Creality427, MachineEnder6)
+  #if NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder3V2, SKR14Turbo, SKR14, Creality422, Creality427, MachineEnder6)
     #define SD_DETECT_STATE HIGH
   #endif
 
@@ -2348,7 +2349,7 @@
  *
  * Note that M207 / M208 / M209 settings are saved to EEPROM.
  */
- #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11, MachineEnder3V2, Creality422, Creality427, MachineCR6, MachineCR6Max, MachineCR200B, MachineEnder6, DGUS_LCD_UI_CREALITY_TOUCH)
+ #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11, MachineEnder3V2, Creality422, Creality427, MachineCR6, MachineCR6Max, MachineCR200B, MachineEnder6, DGUS_LCD_UI_CREALITY_TOUCH, DWIN_T5L)
   #define FWRETRACT
 #endif
 #if ENABLED(FABB)
@@ -3976,7 +3977,7 @@
  *
  * Implement M486 to allow Marlin to skip objects
  */
-#if NONE(MachineCR10Orig, LowMemoryBoard, EXTENSIBLE_UI, SKRMiniE3V2) || ANY(MachineCR6, MachineCR6Max, MachineCR200B)
+#if NONE(MachineCR10Orig, LowMemoryBoard, EXTENSIBLE_UI, SKRMiniE3V2) || ANY(MachineCR6, MachineCR6Max, MachineCR200B, DWIN_T5L)
   #define CANCEL_OBJECTS
 #endif
 #if ENABLED(CANCEL_OBJECTS)
