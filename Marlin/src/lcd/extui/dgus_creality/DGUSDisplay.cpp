@@ -76,11 +76,11 @@ void DGUSDisplay::InitDisplay() {
     #endif
   )
     RequestScreen(
-      #if ENABLED(SHOW_BOOTSCREEN)
-        DGUSLCD_SCREEN_BOOT
-      #else
-        DGUSLCD_SCREEN_MAIN
-      #endif
+      //#if ENABLED(SHOW_BOOTSCREEN)
+        DGUSLCD_SCREEN_BOOT //show boot screen regardless
+      //#else
+      //  DGUSLCD_SCREEN_MAIN
+      //#endif
     );
 }
 
@@ -311,8 +311,8 @@ void DGUSDisplay::SetTouchScreenConfiguration(bool enable_standby, bool enable_s
   cfg_bits |= 1UL << 4; // 4: auto-upload should always be enabled
   if (enable_sound) cfg_bits |= 1UL << 3; // 3: audio
   if (enable_standby) cfg_bits |= 1UL << 2; // 2: backlight on standby
-  #if NONE(MachineCR200B, MachineEnder7)
-    cfg_bits |= 1UL << 1; // 1 & 0: 270 degrees orientation of display
+  #if NONE(MachineCR200B, MachineEnder7, TSHorizontal)
+    cfg_bits |= 1UL << 1; // 1 & 0: 270 degrees orientation of display //is vertical
     cfg_bits |= 1UL << 0; 
   #endif
 

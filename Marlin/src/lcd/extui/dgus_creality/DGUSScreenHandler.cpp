@@ -118,7 +118,7 @@ void DGUSScreenHandler::DefaultSettings() {
   Settings.display_sound = true;
 
   Settings.standby_screen_brightness = 10;
-  Settings.screen_brightness = 100;
+  Settings.screen_brightness = 60;
   Settings.standby_time_seconds = 60;
 
   #if ENABLED(LED_COLOR_PRESETS)
@@ -1475,13 +1475,15 @@ void DGUSScreenHandler::HandleHeaterControl(DGUS_VP_Variable &var, void *val_ptr
 }
 
 void DGUSScreenHandler::HandleLEDToggle() {
-  bool newState = !caselight.on;
+  #if ENABLED(CASE_LIGHT_ENABLE)
+    bool newState = !caselight.on;
 
-  caselight.on = newState;
-  caselight.update(newState);
+    caselight.on = newState;
+    caselight.update(newState);
 
-  RequestSaveSettings();
-  ForceCompleteUpdate();
+    RequestSaveSettings();
+    ForceCompleteUpdate();
+  #endif
 }
 
 void DGUSScreenHandler::HandleToggleTouchScreenMute(DGUS_VP_Variable &var, void *val_ptr) {
