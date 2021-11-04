@@ -2130,7 +2130,7 @@
 #elif ALL(MachineCRXPro, HotendStock, ABL_BLTOUCH)
   #define NOZZLE_TO_PROBE_OFFSET { 48, 3, 0 }
 #elif ENABLED(MachineCR5Pro)
-  #define NOZZLE_TO_PROBE_OFFSET { 40, 3, -1.90 }
+  #define NOZZLE_TO_PROBE_OFFSET { 35, 3, -1.90 }
 #elif ENABLED(MachineEnder3Max)
   #define NOZZLE_TO_PROBE_OFFSET { 55, -8, 0 }
 #elif ENABLED(MachineCR200B)
