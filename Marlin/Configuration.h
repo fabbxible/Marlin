@@ -1840,8 +1840,8 @@
   #define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves    
 #elif ENABLED(MachineCR200B)
   #define DEFAULT_MAX_FEEDRATE          { 200, 200, 10, 50 }
-  #define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 4000 }
-  #define DEFAULT_ACCELERATION          1500    // X, Y, Z and E acceleration for printing moves
+  #define DEFAULT_MAX_ACCELERATION      { 1500, 1500, 100, 2000 }
+  #define DEFAULT_ACCELERATION          1000    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
   #define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves    
 #endif
@@ -1882,7 +1882,7 @@
  */
 #define CLASSIC_JERK
 #if ENABLED(CLASSIC_JERK)
-  #define DEFAULT_XJERK 10.0
+  #define DEFAULT_XJERK 5.0
   #define DEFAULT_YJERK 5.0
   #define DEFAULT_ZJERK  0.3
   //#define DEFAULT_IJERK  0.3
