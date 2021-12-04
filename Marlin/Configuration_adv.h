@@ -863,7 +863,7 @@
    * This feature was designed for Deltabots with very fast Z moves; however, higher speed Cartesians
    * might be able to use it. If the machine can't raise Z fast enough the BLTouch may go into ALARM.
    */
-  #if NONE(MachineCR10Orig, LowMemoryBoard, MachineCRX, MachineCR5Pro)
+  #if NONE(MachineCR10Orig, LowMemoryBoard, MachineCR5Pro)
     #define BLTOUCH_HS_MODE
   #endif
 
@@ -1370,7 +1370,7 @@
 
   // The standard SD detect circuit reads LOW when media is inserted and HIGH when empty.
   // Enable this option and set to HIGH if your SD cards are incorrectly detected.
-  #if NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder3V2, SKR14Turbo, SKR14, Creality422, Creality427, MachineEnder6, MachineCR5Pro)
+  #if NONE(MachineCR10SPro, MachineEnder5Plus, MachineCR10Max, MachineEnder3V2, SKR14Turbo, SKR14, Creality422, Creality427, MachineEnder6, MachineCR5Pro)
     #define SD_DETECT_STATE HIGH
   #endif
 

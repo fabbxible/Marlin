@@ -24,7 +24,7 @@ This branch adds support for the Creality touchscreen machines and was split off
 
 
 
-The CRX Has screen files with or without ABL. Ender 3V2 has a dedicated file set. All other machines should use the same generic set. V3 is the current screen file version.
+Ender 3V2 has a dedicated file set. All other machines should use the same generic set. V3 is the current screen file version.
 
 Screen files are archived with [7-Zip](https://www.7-zip.org/) simply because it came out 1/5 the file size of a zip file. That added up fast!
 
@@ -62,7 +62,7 @@ Marlin Discord - https://discord.gg/n5NJ59y
 -- Screen configuration code based loosely on the work from the CR6 community modified for this screen model
 -- Automatic Screen rotation for the Ender 6 (Default is upside-down)
 - Manual Mesh Controls for no Probe machines
--- CRX and Ender 6 with no Probe can now use all mesh controls
+-- Ender 6 with no Probe can now use all mesh controls
 -- All machines now use the same screen files except for Ender 3 V2 Rotary Dial machines and CR6
 - Home button added to 5 point adjustment screen
 - Tap mesh values to manually type in a new value - allows for manual adjustment of mesh values

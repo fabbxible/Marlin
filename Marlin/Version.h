@@ -61,8 +61,6 @@
   #define VerChar1 "O"
 #elif(ENABLED(MachineCR10Std))
   #define VerChar1 "S"
-#elif(ENABLED(MachineCRX))
-  #define VerChar1 "X"
 #elif(ENABLED(MachineCR6))
   #define VerChar1 "CR6"
 #elif(ENABLED(MachineCR6Max))
@@ -152,8 +150,6 @@
   #define CUSTOM_MACHINE_NAME "SuPeR CR-20"
 #elif(ENABLED(MachineCR10Orig))
   #define CUSTOM_MACHINE_NAME "SuPeR CR-10"
-#elif(ENABLED(MachineCRX))
-  #define CUSTOM_MACHINE_NAME "Fabbxible CR-X"
 #elif ENABLED(MachineCR10SProV2)
   #define CUSTOM_MACHINE_NAME "Fabbxible 10SProV2"
 #elif(ENABLED(MachineCR10SPro))

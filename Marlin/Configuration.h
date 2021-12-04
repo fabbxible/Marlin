@@ -9,8 +9,6 @@
 // Touchscreen
 //#define MachineCR10SPro // Graphics LCD Requires soldering R64 and R66
 //#define MachineCR10SProV2 // Second Gen 10S Pro with BLTouch wired to Z Max
-//#define MachineCRX
-//#define MachineCRXPro
 //#define MachineCR10Max
 //#define MachineEnder5Plus
 //#define MachineCR6
@@ -499,24 +497,9 @@
   #endif
 #endif
 
-#if ENABLED(MachineCRXPro)
-  #define MachineCRX
-  #if NONE(ABL_NCSW, ABL_EZABL, ABL_BLTOUCH)
-    #define ABL_BLTOUCH
-  #endif
-#endif
-
-#if ANY(MachineCRX, MachineCRXPro, MachineEnder5Plus, MachineCR5Pro, MachineCR10SPro, MachineCR10Max, MachineEnder6)
+#if ANY(MachineEnder5Plus, MachineCR5Pro, MachineCR10SPro, MachineCR10Max, MachineEnder6)
   #if NONE(GraphicLCD, OrigLCD, FORCE10SPRODISPLAY)
     #define FORCE10SPRODISPLAY
-  #endif
-#endif
-
-#if ENABLED(MachineCRX)
-  #define MachineCR10Std
-  #define Dual_BowdenSplitterY
-  #if NONE(BedAC, BedDC)
-    #define BedDC
   #endif
 #endif
 
@@ -609,7 +592,7 @@
   #define LowMemoryBoard
 #endif
 //Show the Marlin bootscreen on startup. ** ENABLE FOR PRODUCTION **
-#if NONE(MachineEnder4, MachineCR10SPro, MachineCRX, MachineCR10Max, MachineEnder5Plus) || ENABLED(GraphicLCD)
+#if NONE(MachineEnder4, MachineCR10SPro, MachineCR10Max, MachineEnder5Plus) || ENABLED(GraphicLCD)
   #undef SolidBedMounts
 #endif
 
@@ -617,7 +600,7 @@
   #define POWER_LOSS_RECOVERY
 #endif
 
-#if NONE(MachineCR10Orig, MachineEnder4, MachineCR10SPro, MachineCRX, MachineCR10Max, MachineEnder5Plus, MachineEnder6, MachineCR20B, SKRMiniE3V2, FORCE10SPRODISPLAY) || ANY(GraphicLCD, DWIN_T5L)
+#if NONE(MachineCR10Orig, MachineEnder4, MachineCR10SPro, MachineCR10Max, MachineEnder5Plus, MachineEnder6, MachineCR20B, SKRMiniE3V2, FORCE10SPRODISPLAY) || ANY(GraphicLCD, DWIN_T5L)
   #define SHOW_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
@@ -661,11 +644,11 @@
   #define LCD_SERIAL_PORT 1
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL -1
-#elif ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR5Pro, MachineCR10Max) && NONE(GraphicLCD, MachineEnder3V2, Creality422, Creality427, MachineEnder6)
+#elif ANY(MachineCR10SPro, MachineEnder5Plus, MachineCR5Pro, MachineCR10Max) && NONE(GraphicLCD, MachineEnder3V2, Creality422, Creality427, MachineEnder6)
   #define LCD_SERIAL_PORT 2
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 0
-#elif ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder6, MachineCR200B, DWIN_T5L) && DISABLED(GraphicLCD)
+#elif ANY(MachineCR10SPro, MachineEnder5Plus, MachineCR10Max, MachineEnder6, MachineCR200B, DWIN_T5L) && DISABLED(GraphicLCD)
   #define LCD_SERIAL_PORT 3
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 1
@@ -1259,10 +1242,6 @@
         #define  DEFAULT_Kp 11.8 //240C
         #define  DEFAULT_Ki 0.8
         #define  DEFAULT_Kd 41.3
-      #elif ENABLED(MachineCRX)
-        #define DEFAULT_Kp 19.00
-        #define DEFAULT_Ki 1.40
-        #define DEFAULT_Kd 66.00
       #elif ENABLED(MachineCR10SV2)
         #define  DEFAULT_Kp 19.47
         #define  DEFAULT_Ki 1.59
@@ -1762,7 +1741,7 @@
   #define EStepsmm 415
 #elif ANY(EZRstruder, MachineCR10SV2, MachineCR200B)
   #define EStepsmm 93
-#elif ANY(MachineCR10SPro, MachineCR10Max, MachineCRXPro, MachineEnder6, MachineCR5Pro)
+#elif ANY(MachineCR10SPro, MachineCR10Max, MachineEnder6, MachineCR5Pro)
   #define EStepsmm 140 //dual drive
 #elif ENABLED(MachineCR2020)
   #define EStepsmm 113
@@ -2120,8 +2099,6 @@
       #define NOZZLE_TO_PROBE_OFFSET { -27.625, 0.0, 0 }
     #endif
   #endif
-#elif ALL(MachineCRXPro, HotendStock, ABL_BLTOUCH)
-  #define NOZZLE_TO_PROBE_OFFSET { 48, 3, 0 }
 #elif ENABLED(MachineCR5Pro)
   #define NOZZLE_TO_PROBE_OFFSET { 35, 3, -1.90 }
 #elif ENABLED(MachineEnder3Max)
@@ -2130,12 +2107,6 @@
   #define NOZZLE_TO_PROBE_OFFSET { 23, 31, 0 }
 #elif ANY(MachineCR6, MachineCR6Max)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, 0.2 }
-#elif ALL(MachineCRX, HotendStock)
-   #if ENABLED(ABL_BLTOUCH)
-     #define NOZZLE_TO_PROBE_OFFSET { -22, -45, 0 }
-   #elif ANY(ABL_EZABL, ABL_NCSW)
-     #define NOZZLE_TO_PROBE_OFFSET { -44, -10, 0 }
-   #endif
 #elif ALL(MachineEnder5Plus, HotendStock)
   #define NOZZLE_TO_PROBE_OFFSET { -45, -7, TERN(FABB,-1.10,-2.5) }
 #elif ENABLED(MachineEnder6)
@@ -2387,7 +2358,7 @@
     #define INVERT_Y_DIR false
   #else
     #define INVERT_X_DIR false
-    #if ANY(MachineCRX,MachineCR10SPro, MachineCR10Max, MachineCR2020, MachineEnder6)
+    #if ANY(MachineCR10SPro, MachineCR10Max, MachineCR2020, MachineEnder6)
       #define INVERT_Y_DIR true
     #else
       #define INVERT_Y_DIR false
@@ -2548,13 +2519,6 @@
     #define X_MAX_POS 240
     #define Y_MAX_POS 240
     #define ClipClearance 15
-  #elif ENABLED(MachineCRX)
-    #define X_BED_SIZE 300
-    #define Y_BED_SIZE 300
-    #define Z_MAX_POS 400
-    #define X_MAX_POS 315
-    #define Y_MAX_POS 308
-    #define ClipClearance 15
   #elif ENABLED(MachineCR10SProV2)
     #define X_BED_SIZE 300
     #define Y_BED_SIZE 300
@@ -2696,11 +2660,11 @@
  * RAMPS-based boards use SERVO3_PIN for the first runout sensor.
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  */
-//#if NONE(MachineCR10Orig, MachineCR20, MachineEnder3, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineCRX, Melzi_To_SBoardUpgrade) || ANY(AddonFilSensor, lerdgeFilSensor, DualFilSensors)
+//#if NONE(MachineCR10Orig, MachineCR20, MachineEnder3, MachineEnder3V2, MachineEnder4, MachineEnder5, Melzi_To_SBoardUpgrade) || ANY(AddonFilSensor, lerdgeFilSensor, DualFilSensors)
   #define FILAMENT_RUNOUT_SENSOR //enable for all
 //#endif
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-  #if ANY(MachineCR10Orig, MachineCR20, MachineEnder3, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineCRX, Melzi_To_SBoardUpgrade)
+  #if ANY(MachineCR10Orig, MachineCR20, MachineEnder3, MachineEnder3V2, MachineEnder4, MachineEnder5, Melzi_To_SBoardUpgrade)
     #define FIL_RUNOUT_ENABLED_DEFAULT false //these stock machine have no sensor 
   #else 
     #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
@@ -2951,7 +2915,7 @@
   //========================= Unified Bed Leveling ============================
   //===========================================================================
   #define MESH_INSET 1
-  #if NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder4, OrigLCD) || ENABLED(GraphicLCD)
+  #if NONE(MachineCR10SPro, MachineEnder5Plus, MachineCR10Max, MachineEnder4, OrigLCD) || ENABLED(GraphicLCD)
     #define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
   #endif
 
@@ -2989,7 +2953,7 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-#if NONE(ABL_EZABL, ABL_NCSW, ABL_BLTOUCH, ABL_TOUCH_MI, SKRMiniE3V2, MachineEnder3V2, FORCE10SPRODISPLAY, DWIN_T5L, MachineCR6, MachineCR6Max, MachineCR200B) && (DISABLED(MachineCRX) || ENABLED(GraphicLCD))
+#if NONE(ABL_EZABL, ABL_NCSW, ABL_BLTOUCH, ABL_TOUCH_MI, SKRMiniE3V2, MachineEnder3V2, FORCE10SPRODISPLAY, DWIN_T5L, MachineCR6, MachineCR6Max, MachineCR200B) && ENABLED(GraphicLCD)
   #define LCD_BED_LEVELING
 #endif
 
@@ -3285,7 +3249,7 @@
  *   Caveats: The ending Z should be the same as starting Z.
  * Attention: EXPERIMENTAL. G-code arguments may change.
  */
-#if ANY(MachineCRX, PurgeBucket)
+#if ENABLED(PurgeBucket)
   #define NOZZLE_CLEAN_FEATURE
 #endif
 #if ENABLED(NOZZLE_CLEAN_FEATURE)
@@ -3678,7 +3642,7 @@
   #define DWIN_CREALITY_LCD
 #elif ANY(OrigLCD, MachineCR10Orig, MachineEnder3Pro422, MachineEnder3Pro427, MachineEnder3Max, MachineEnder5Pro422, MachineEnder5Pro427, SKRMiniE3V2, SKRE3Turbo) && NONE(GraphicLCD, DWIN_T5L)
   #define CR10_STOCKDISPLAY
-#elif NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, OrigLCD, MachineCR10Orig, SKRMiniE3V2, FORCE10SPRODISPLAY, DWIN_T5L, MachineCR6, MachineCR6Max, MachineCR200B) || ENABLED(GraphicLCD)
+#elif NONE(MachineCR10SPro, MachineEnder5Plus, MachineCR10Max, OrigLCD, MachineCR10Orig, SKRMiniE3V2, FORCE10SPRODISPLAY, DWIN_T5L, MachineCR6, MachineCR6Max, MachineCR200B) || ENABLED(GraphicLCD)
   #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 #endif
 //
@@ -4010,7 +3974,7 @@
 // Third-party or vendor-customized controller interfaces.
 // Sources should be installed in 'src/lcd/extui'.
 //
-//#if ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR5Pro, MachineCR10Max, MachineEnder6) && (NONE(GraphicLCD, SKRMiniE3V2) || ENABLED(FORCE10SPRODISPLAY))
+//#if ANY(MachineCR10SPro, MachineEnder5Plus, MachineCR5Pro, MachineCR10Max, MachineEnder6) && (NONE(GraphicLCD, SKRMiniE3V2) || ENABLED(FORCE10SPRODISPLAY))
 //  #ifndef FORCE10SPRODISPLAY
 //    #define FORCE10SPRODISPLAY
 //  #endif

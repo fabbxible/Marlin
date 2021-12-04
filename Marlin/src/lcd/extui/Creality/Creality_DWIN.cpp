@@ -24,7 +24,7 @@
  * lcd/extui/lib/Creality/Creality_DWIN.cpp
  * ****************************************
  * Extensible_UI implementation for Creality DWIN
- * 10SPro, Max, CRX, and others
+ * 10SPro, Max, and others
  * Based original Creality release, ported to ExtUI for Marlin 2.0
  * Written by Insanity Automation, sponsored by Tiny Machines 3D
  *
