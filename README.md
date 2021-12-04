@@ -36,7 +36,6 @@ There is a limitation with Windows systems and path depth so the file names need
 - DZ = Dual Z Steppers
 - Fil = FilamentRunout
 - Slnt = Creality Silent Board
-- H = E3D Hemera Extruder
 - MC = Mosquito Creality mount
 - ME = Mosquito E3D mount
 - Melzi Host option disables local SD card to allow more features and buffer for Octoprint control

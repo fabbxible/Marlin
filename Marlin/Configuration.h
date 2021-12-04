@@ -91,7 +91,6 @@
  //#define BondtechBMG
  //#define BondtechLGX
  //#define E3DTitan
- //#define E3DHemera
  //#define CrealityTitan
  //#define DDXExtruderKit
 
@@ -604,10 +603,6 @@
   #if DISABLED(I2C_EEPROM)
     #define FLASH_EEPROM_EMULATION
   #endif
-#endif
-
-#if ENABLED(E3DHemera)
- #define DirectDrive
 #endif
 
 #if ENABLED(MachineCR10Orig, ABL_BI)
@@ -1765,8 +1760,6 @@
   #define EStepsmm 400
 #elif(ENABLED(BondtechBMG) || ENABLED(E3DTitan))
   #define EStepsmm 415
-#elif ENABLED(E3DHemera)
-  #define EStepsmm 409
 #elif ANY(EZRstruder, MachineCR10SV2, MachineCR200B)
   #define EStepsmm 93
 #elif ANY(MachineCR10SPro, MachineCR10Max, MachineCRXPro, MachineEnder6, MachineCR5Pro)
@@ -2149,8 +2142,6 @@
   #define NOZZLE_TO_PROBE_OFFSET { -15, -6, -2 }
 #elif ANY(MachineCR10SPro, MachineCR10Max) && ENABLED(HotendStock) && DISABLED(MicroswissDirectDrive)
   #define NOZZLE_TO_PROBE_OFFSET { -27, 0, 0 }
-#elif (ANY(ABL_BLTOUCH, ABL_EZABL,ABL_NCSW) && ENABLED(E3DHemera))
-    #define NOZZLE_TO_PROBE_OFFSET { -40, 0, 0 }
 #elif ENABLED(MachineCR10SV2)
   #if ENABLED(ABL_BLTOUCH)
     #define NOZZLE_TO_PROBE_OFFSET { 45, 7, 0 }
@@ -2532,13 +2523,8 @@
   #elif ENABLED(MachineEnder5Plus)
     #define Y_BED_SIZE 360
     #define Z_MAX_POS 400
-    #if ENABLED(E3DHemera)
-      #define X_BED_SIZE 352
-      #define X_MAX_POS 352
-    #else
-      #define X_BED_SIZE TERN(FABB,320,360)
-      #define X_MAX_POS TERN(FABB,320,360)
-    #endif
+    #define X_BED_SIZE TERN(FABB,320,360)
+    #define X_MAX_POS TERN(FABB,320,360)
     #define Y_MAX_POS 360
     #define ClipClearance 25
   #elif ENABLED(MachineCR5Pro)
