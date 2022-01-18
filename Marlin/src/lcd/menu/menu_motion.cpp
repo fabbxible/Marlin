@@ -28,7 +28,7 @@
 
 #if HAS_LCD_MENU
 
-#define LARGE_AREA_TEST ((X_BED_SIZE) >= 1000 || (Y_BED_SIZE) >= 1000 || (Z_MAX_POS) >= 1000)
+#define LARGE_AREA_TEST ((X_BED_SIZE) >= 1000 || (Y_BED_SIZE) >= 1000 )
 
 #include "menu_item.h"
 #include "menu_addon.h"
@@ -166,7 +166,7 @@ void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int
     switch (axis) {
       case X_AXIS: STATIC_ITEM(MSG_MOVE_X, SS_DEFAULT|SS_INVERT); break;
       case Y_AXIS: STATIC_ITEM(MSG_MOVE_Y, SS_DEFAULT|SS_INVERT); break;
-      case Z_AXIS: STATIC_ITEM(MSG_MOVE_Z, SS_DEFAULT|SS_INVERT); break;
+      //case Z_AXIS: STATIC_ITEM(MSG_MOVE_Z, SS_DEFAULT|SS_INVERT); break;
       default:
         TERN_(MANUAL_E_MOVES_RELATIVE, manual_move_e_origin = current_position.e);
         STATIC_ITEM(MSG_MOVE_E, SS_DEFAULT|SS_INVERT);
@@ -186,22 +186,7 @@ void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int
     SUBMENU(MSG_MOVE_10MM, []{ _goto_manual_move(10);    });
     SUBMENU(MSG_MOVE_1MM,  []{ _goto_manual_move( 1);    });
     SUBMENU(MSG_MOVE_01MM, []{ _goto_manual_move( 0.1f); });
-    if (axis == Z_AXIS && (FINE_MANUAL_MOVE) > 0.0f && (FINE_MANUAL_MOVE) < 0.1f) {
-      // Determine digits needed right of decimal
-      constexpr uint8_t digs = !UNEAR_ZERO((FINE_MANUAL_MOVE) * 1000 - int((FINE_MANUAL_MOVE) * 1000)) ? 4 :
-                               !UNEAR_ZERO((FINE_MANUAL_MOVE) *  100 - int((FINE_MANUAL_MOVE) *  100)) ? 3 : 2;
-      PGM_P const label = GET_TEXT(MSG_MOVE_N_MM);
-      char tmp[strlen_P(label) + 10 + 1], numstr[10];
-      sprintf_P(tmp, label, dtostrf(FINE_MANUAL_MOVE, 1, digs, numstr));
-      #if DISABLED(HAS_GRAPHICAL_TFT)
-        SUBMENU_P(NUL_STR, []{ _goto_manual_move(float(FINE_MANUAL_MOVE)); });
-        MENU_ITEM_ADDON_START(0 + ENABLED(HAS_MARLINUI_HD44780));
-        lcd_put_u8str(tmp);
-        MENU_ITEM_ADDON_END();
-      #else
-        SUBMENU_P(tmp, []{ _goto_manual_move(float(FINE_MANUAL_MOVE)); });
-      #endif
-    }
+
   }
   END_MENU();
 }

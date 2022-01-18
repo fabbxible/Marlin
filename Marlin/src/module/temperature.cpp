@@ -2177,7 +2177,7 @@ void Temperature::updateTemperaturesFromRawValues() {
  *  - Init temp_range[], used for catching min/maxtemp
  */
 void Temperature::init() {
-
+  fan_speed[0]=255;
   TERN_(PROBING_HEATERS_OFF, paused_for_probing = false);
 
   #if BOTH(PIDTEMP, PID_EXTRUSION_SCALING)

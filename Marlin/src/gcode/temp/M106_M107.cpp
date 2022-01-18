@@ -21,7 +21,7 @@
  */
 
 #include "../../inc/MarlinConfig.h"
-
+#include "../../lcd/marlinui.h"
 #if HAS_FAN
 
 #include "../gcode.h"
@@ -59,6 +59,8 @@
  *           3-255 = Set the speed for use with T2
  */
 void GcodeSuite::M106() {
+  ui.laser=HIGH;
+  OUT_WRITE(13,ui.laser);//enable laser
   const uint8_t pfan = parser.byteval('P', _ALT_P);
   if (pfan >= _CNT_P) return;
   #if REDUNDANT_PART_COOLING_FAN
@@ -88,7 +90,7 @@ void GcodeSuite::M106() {
   TERN_(FOAMCUTTER_XYUV, speed *= 2.55); // Get command in % of max heat
 
   // Set speed, with constraint
-  thermalManager.set_fan_speed(pfan, speed);
+  thermalManager.set_fan_speed(pfan, 255-speed);
 
   TERN_(LASER_SYNCHRONOUS_M106_M107, planner.buffer_sync_block(BLOCK_FLAG_SYNC_FANS));
 
@@ -100,13 +102,15 @@ void GcodeSuite::M106() {
  * M107: Fan Off
  */
 void GcodeSuite::M107() {
+  ui.laser=LOW;
+  OUT_WRITE(13,ui.laser);//enable laser
   const uint8_t pfan = parser.byteval('P', _ALT_P);
   if (pfan >= _CNT_P) return;
   #if REDUNDANT_PART_COOLING_FAN
     if (pfan == REDUNDANT_PART_COOLING_FAN) return;
   #endif
 
-  thermalManager.set_fan_speed(pfan, 0);
+  thermalManager.set_fan_speed(pfan, 255);
 
   if (TERN0(DUAL_X_CARRIAGE, idex_is_duplicating()))  // pfan == 0 when duplicating
     thermalManager.set_fan_speed(1 - pfan, 0);

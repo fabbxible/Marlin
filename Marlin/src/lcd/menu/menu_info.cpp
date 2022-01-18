@@ -98,7 +98,7 @@
 void menu_info_thermistors() {
   if (ui.use_click()) return ui.go_back();
 
-  START_SCREEN();
+  //START_SCREEN();
 
   #if HAS_EXTRUDERS
     #define THERMISTOR_ID TEMP_SENSOR_0
@@ -209,7 +209,7 @@ void menu_info_thermistors() {
     STATIC_ITEM(TERN(WATCH_COOLER, MSG_INFO_RUNAWAY_ON, MSG_INFO_RUNAWAY_OFF), SS_LEFT);
   #endif
 
-  END_SCREEN();
+  //END_SCREEN();
 }
 
 //
@@ -256,7 +256,6 @@ void menu_info_board() {
     STATIC_ITEM_P(PSTR(STRING_DISTRIBUTION_DATE));              // YYYY-MM-DD HH:MM
     STATIC_ITEM_P(PSTR(MACHINE_NAME), SS_DEFAULT|SS_INVERT);    // My3DPrinter
     STATIC_ITEM_P(PSTR(WEBSITE_URL));                           // www.my3dprinter.com
-    PSTRING_ITEM(MSG_INFO_EXTRUDERS, STRINGIFY(EXTRUDERS), SS_CENTER); // Extruders: 2
     #if HAS_LEVELING
       STATIC_ITEM(
         TERN_(AUTO_BED_LEVELING_3POINT, MSG_3POINT_LEVELING)      // 3-Point Leveling

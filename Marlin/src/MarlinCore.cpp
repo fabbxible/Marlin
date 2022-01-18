@@ -498,14 +498,14 @@ inline void manage_inactivity(const bool no_stepper_sleep=false) {
     #define HAS_CUSTOM_USER_BUTTON(N) (PIN_EXISTS(BUTTON##N) && defined(BUTTON##N##_HIT_STATE) && defined(BUTTON##N##_GCODE))
     #define HAS_BETTER_USER_BUTTON(N) HAS_CUSTOM_USER_BUTTON(N) && defined(BUTTON##N##_DESC)
     #define _CHECK_CUSTOM_USER_BUTTON(N, CODE) do{                     \
-      constexpr millis_t CUB_DEBOUNCE_DELAY_##N = 250UL;               \
+      constexpr millis_t CUB_DEBOUNCE_DELAY_##N = 500UL;               \
       static millis_t next_cub_ms_##N;                                 \
       if (BUTTON##N##_HIT_STATE == READ(BUTTON##N##_PIN)               \
         && (ENABLED(BUTTON##N##_WHEN_PRINTING) || printer_not_busy)) { \
         if (ELAPSED(ms, next_cub_ms_##N)) {                            \
           next_cub_ms_##N = ms + CUB_DEBOUNCE_DELAY_##N;               \
           CODE;                                                        \
-          queue.inject(F(BUTTON##N##_GCODE));                     \
+          wait_for_user=false;\
           TERN_(HAS_LCD_MENU, ui.quick_feedback());                    \
         }                                                              \
       }                                                                \

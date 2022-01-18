@@ -390,7 +390,7 @@ void menu_backlash();
 
   // M201 / M204 Accelerations
   void menu_advanced_acceleration() {
-    const float max_accel = _MAX(planner.settings.max_acceleration_mm_per_s2[A_AXIS], planner.settings.max_acceleration_mm_per_s2[B_AXIS], planner.settings.max_acceleration_mm_per_s2[C_AXIS]);
+    const float max_accel = _MAX(planner.settings.max_acceleration_mm_per_s2[A_AXIS], planner.settings.max_acceleration_mm_per_s2[B_AXIS]);
 
     // M201 settings
     constexpr xyze_ulong_t max_accel_edit =
@@ -561,7 +561,9 @@ void menu_advanced_settings() {
       //
       // Set Home Offsets
       //
-      ACTION_ITEM(MSG_SET_HOME_OFFSETS, []{ queue.inject(F("M428")); ui.return_to_status(); });
+      //ACTION_ITEM(MSG_SET_HOME_OFFSETS, []{ queue.inject(F("M428")); ui.return_to_status(); });
+      EDIT_ITEM(float31sign, MSG_HOME_OFFSET_X, &home_offset[X_AXIS],0, 200);
+      EDIT_ITEM(float31sign, MSG_HOME_OFFSET_Y, &home_offset[Y_AXIS],0, 200);
     #endif
 
     // M203 / M205 - Feedrate items

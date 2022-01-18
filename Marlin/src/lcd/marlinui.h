@@ -203,7 +203,7 @@ public:
   MarlinUI() {
     TERN_(HAS_LCD_MENU, currentScreen = status_screen);
   }
-
+  bool laser=LOW;
   #if HAS_MULTI_LANGUAGE
     static uint8_t language;
     static void set_language(const uint8_t lang);

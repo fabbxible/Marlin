@@ -114,6 +114,7 @@ void menu_configuration();
 
   void custom_menus_main() {
     START_MENU();
+        
     BACK_ITEM(MSG_MAIN);
 
     #define HAS_CUSTOM_ITEM_MAIN(N) (defined(MAIN_MENU_ITEM_##N##_DESC) && defined(MAIN_MENU_ITEM_##N##_GCODE))
@@ -291,7 +292,8 @@ void menu_main() {
         ACTION_ITEM(MSG_END_LOOPS, repeat.cancel);
     #endif
 
-    SUBMENU(MSG_TUNE, menu_tune);
+    //SUBMENU(MSG_TUNE, menu_tune);
+
 
     #if ENABLED(CANCEL_OBJECTS) && DISABLED(SLIM_LCD_MENUS)
       SUBMENU(MSG_CANCEL_OBJECT, []{ editable.int8 = -1; ui.goto_screen(menu_cancelobject); });
@@ -314,9 +316,18 @@ void menu_main() {
       SUBMENU(MSG_PREHEAT_CUSTOM, menu_preheat_only);
     #endif
 
-    SUBMENU(MSG_MOTION, menu_motion);
+    //SUBMENU(MSG_MOTION, menu_motion);
+    GCODES_ITEM(MSG_AUTO_HOME, PSTR("G28"));
   }
-
+    //
+    // Speed:
+    //
+    if(busy) EDIT_ITEM(int3, MSG_SPEED, &feedrate_percentage, 10, 999);
+  //OUT_WRITE(13,HIGH);//enable laser
+  //_FAN_EDIT_ITEMS(0,FIRST_FAN_SPEED);
+  editable.uint8=255-thermalManager.fan_speed[0];
+  EDIT_ITEM(percent, MSG_LASER_POWER,&editable.uint8,0,255,[]{if(editable.uint8!=0){ui.laser=HIGH;}else{ui.laser=LOW;} OUT_WRITE(13,ui.laser); thermalManager.set_fan_speed(0,255-editable.uint8);TERN_(LASER_SYNCHRONOUS_M106_M107, planner.buffer_sync_block(BLOCK_FLAG_SYNC_FANS));});
+  //if(!busy)ACTION_ITEM(MSG_LASER_TOGGLE, []{ ui.laser=!ui.laser; if(!ui.laser){thermalManager.set_fan_speed(0,255);TERN_(LASER_SYNCHRONOUS_M106_M107, planner.buffer_sync_block(BLOCK_FLAG_SYNC_FANS));} OUT_WRITE(13,ui.laser);});
   #if HAS_CUTTER
     SUBMENU(MSG_CUTTER(MENU), STICKY_SCREEN(menu_spindle_laser));
   #endif
