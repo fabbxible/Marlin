@@ -24,28 +24,29 @@ Most of the changes are very crude.
 
       From:
         
-        - M107
-        - M0
-        - M106 S5
+        M107
+        M0
+        M106 S5
         
       To:
         
-        - M107
-        - M808 L0
-        - M0
-        - M106 S5
+        M107
+        M808 L0
+        M0
+        M106 S5
 
         
 5. Scroll to bottom and replace G28 with M808.
 
       From:
       
-        -       M107
-        -       G28
+        M107
+        G28
+      
       To:
       
-        -       M107
-        -       M808
+        M107
+        M808
 
 
 6. Now we can cut/engrave the same file over and over agian with the push of the main button
