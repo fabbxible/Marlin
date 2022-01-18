@@ -22,15 +22,15 @@ Most of the changes are very crude.
 3. Find the single M0 Command
 4. Add M808 L0 one line above M0, it will make the actual engraving/cutting repeats infinitely, until stop or powered off.
 
-M107        M107
-M0      ->  M808 L0
-M106 S5     M0
-            M106 S5
+- M107        M107
+- M0      ->  M808 L0
+- M106 S5     M0
+-             M106 S5
         
 5. Scroll to bottom and replace G28 with M808.
 
-M107        M107
-G28     ->  M808
+- M107        M107
+- G28     ->  M808
 
 6. Now we can cut/engrave the same file over and over agian with the push of the main button
 
