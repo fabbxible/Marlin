@@ -52,7 +52,7 @@ Most of the changes are very crude.
 6. Now we can cut/engrave the same file over and over agian with the push of the main button
 
 ## This Firmware also works without a display:
-1. rename gcode file to auto0.gcode
+1. rename gcode file to auto0.g
 2. add repeat marker as shown above.
 3. power cycle the laser engraver.
 
