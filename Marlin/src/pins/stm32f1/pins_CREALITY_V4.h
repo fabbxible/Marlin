@@ -156,7 +156,7 @@
 #define NO_SD_HOST_DRIVE                          // This board's SD is only seen by the printer
 
 #if ENABLED(CR10_STOCKDISPLAY)
-
+#define RET6_12864_LCD
   #if ENABLED(RET6_12864_LCD)
 
     // RET6 12864 LCD

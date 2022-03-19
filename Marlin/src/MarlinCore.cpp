@@ -59,6 +59,7 @@
 #include "sd/cardreader.h"
 
 #include "lcd/marlinui.h"
+#include "lcd/menu/menu.h"
 #if HAS_TOUCH_BUTTONS
   #include "lcd/touch/touch_buttons.h"
 #endif
@@ -505,7 +506,32 @@ inline void manage_inactivity(const bool no_stepper_sleep=false) {
         if (ELAPSED(ms, next_cub_ms_##N)) {                            \
           next_cub_ms_##N = ms + CUB_DEBOUNCE_DELAY_##N;               \
           CODE;                                                        \
-          queue.inject(F(BUTTON##N##_GCODE));                     \
+          if (N==1) {                                                  \
+            if(printer_not_busy) {                                     \
+              cutter.test_fire_pulse();                                \
+            }                                                          \
+            else {                                                     \
+              if (repeat.is_active()) repeat.cancel();                 \
+              wait_for_user = false;                                   \
+            }                                                          \
+          }                                                            \
+          else if (N==2) {                                             \
+            if (printer_not_busy) {                                    \
+              if (ui.on_status_screen()) {                             \
+                ui.manual_move.menu_scale = 0.1;                       \
+                ui.goto_screen(lcd_move_z);                            \
+              }                                                        \
+              else {                                                   \
+                ui.return_to_status();                                 \
+              }                                                        \
+            }                                                          \
+            else {                                                     \
+              wait_for_user = false;                                   \
+            }                                                          \
+          }                                                            \
+          else {                                                       \
+            queue.inject(F(BUTTON##N##_GCODE));                        \
+          }                                                            \
           TERN_(HAS_LCD_MENU, ui.quick_feedback());                    \
         }                                                              \
       }                                                                \
